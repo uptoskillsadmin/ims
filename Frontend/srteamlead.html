@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="UptoSkills Sr. TL Dashboard">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1dc9ea">
+  <link rel="apple-touch-icon" href="icon.webp">
+  <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlVwdG9Ta2lsbHMgU3IuIFRMIERhc2hib2FyZCIsCiAgInNob3J0X25hbWUiOiAiU3IuIFRMIERhc2hib2FyZCIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAic2NvcGUiOiAiLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzBmMTcyYSIsCiAgInRoZW1lX2NvbG9yIjogIiMxZGM5ZWEiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJpY29uLndlYnAiLAogICAgICAic2l6ZXMiOiAiMjQweDQ4MCIsCiAgICAgICJ0eXBlIjogImltYWdlL3dlYnAiLAogICAgICAicHVycG9zZSI6ICJhbnkgbWFza2FibGUiCiAgICB9LAogICAgewogICAgICAic3JjIjogImljb24ud2VicCIsCiAgICAgICJzaXplcyI6ICIyNDB4NDgwIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvd2VicCIsCiAgICAgICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSIKICAgIH0KICBdCn0K">
+  <title>Sr Team Lead Dashboard</title>
+  <style>
+    /* All CSS from index.html is copied here */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root, [data-theme="dark"] {
+      --bg:#0f172a; --bg-elevated:#111927; --card:#1e293b; --card-hover:#253047; --input-bg: #111927; --border:#2d3a50; --border-light:#3a4a62; --text-primary:#f1f5f9; --text-secondary:#94a3b8; --text-tertiary:#64748b; --accent:#1dc9ea; --accent-dim:#0ea5b9; --accent-light:#06b6d4; --accent-bg:#0a2d3a; --green:#22c55e; --green-light:#16a34a; --green-bg:#0a2d1a; --orange:#f59e0b; --orange-light:#d97706; --orange-bg:#2d2108; --red:#ef4444; --red-light:#dc2626; --red-bg:#2d0a0a; --purple:#c084fc; --purple-light:#a855f7; --purple-bg:#2a0a3a; --teal:#14b8a6; --teal-light:#0d9488; --teal-bg:#0a2d2a; --bg-card:var(--card); --card-bg:var(--card); --bg-hover:var(--card-hover); --radius-sm:6px; --radius:10px; --radius-lg:14px; --radius-xl:18px; --shadow-sm:0 1px 2px rgba(0,0,0,0.3); --shadow:0 4px 12px rgba(0,0,0,0.4); --shadow-lg:0 8px 30px rgba(0,0,0,0.5); --font:-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Segoe UI', sans-serif; --mono:'SF Mono', 'SFMono-Regular', 'JetBrains Mono', monospace; --transition:all 0.2s cubic-bezier(0.25,0.1,0.25,1);
+    }
+    [data-theme="light"] {
+      --bg:#f1f5f9; --bg-elevated:#ffffff; --card:#ffffff; --card-hover:#f8fafc; --input-bg: #f8fafc; --border:#e2e8f0; --border-light:#cbd5e1; --text-primary:#0f172a; --text-secondary:#475569; --text-tertiary:#94a3b8; --accent:#0891b2; --accent-dim:#0e7490; --accent-light:#06b6d4; --accent-bg:#ecfeff; --green:#16a34a; --green-light:#15803d; --green-bg:#ecfdf5; --orange:#d97706; --orange-light:#b45309; --orange-bg:#fffbeb; --red:#dc2626; --red-light:#b91c1c; --red-bg:#fef2f2; --purple:#9333ea; --purple-light:#7e22ce; --purple-bg:#faf5ff; --teal:#0d9488; --teal-light:#0f766e; --teal-bg:#f0fdfa; --shadow-sm:0 1px 2px rgba(15,23,42,0.06); --shadow:0 4px 14px rgba(15,23,42,0.10); --shadow-lg:0 10px 34px rgba(15,23,42,0.14);
+    }
+    body { font-family:var(--font); background:var(--bg); color:var(--text-primary); -webkit-font-smoothing:antialiased; min-height:100vh; }
+    .container { max-width:1400px; margin:0 auto; padding:20px; }
+    .tl-container { max-width:1400px; }
+    .btn { display:inline-flex; align-items:center; gap:6px; padding:10px 22px; border:none; border-radius:var(--radius); font-size:13px; font-weight:600; cursor:pointer; transition:var(--transition); font-family:var(--font); text-decoration:none; white-space:nowrap; user-select:none; }
+    .btn:hover { transform:translateY(-1px); box-shadow:var(--shadow); }
+    .btn:active { transform:translateY(0); }
+    .btn-accent { background:var(--accent); color:#0f172a; }
+    .btn-accent:hover { background:var(--accent-light); }
+    .btn-blue { background:var(--accent); color:#0f172a; }
+    .btn-ghost { background:transparent; color:var(--text-secondary); border:1px solid var(--border); }
+    .btn-ghost:hover { background:var(--bg-elevated); border-color:var(--accent); color:var(--accent); }
+    .btn-sm { padding:7px 14px; font-size:12px; }
+    .btn-red { background:var(--red); color:#fff; }
+    .form-group { margin-bottom:16px; }
+    .form-group label { display:block; font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:5px; letter-spacing:0.3px; text-transform:uppercase; }
+    select, textarea, input[type=text], input[type=email], input[type=password], input[type=date], input[type=number] { width:100%; padding:10px 14px; border:1.5px solid var(--border); border-radius:var(--radius-sm); font-size:14px; font-family:var(--font); transition:var(--transition); background:var(--input-bg); color:var(--text-primary); appearance:none; }
+    input:focus, select:focus, textarea:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(29,201,234,0.15); }
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1000; align-items:center; justify-content:center; padding:24px; backdrop-filter:blur(8px); }
+    .modal-overlay.open { display:flex; }
+    .modal { background:var(--card); border-radius:var(--radius-xl); padding:32px; max-width:480px; width:100%; box-shadow:var(--shadow-lg); max-height:90vh; overflow-y:auto; }
+    .modal h3 { font-size:18px; font-weight:700; margin-bottom:4px; color:var(--text-primary); }
+    .modal p { font-size:14px; color:var(--text-secondary); margin-bottom:20px; line-height:1.4; }
+    .modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; padding-top:16px; border-top:1px solid var(--border-light); }
+    .spinner-overlay { display:none; position:fixed; inset:0; background:rgba(255,255,255,0.8); z-index:3000; align-items:center; justify-content:center; flex-direction:column; gap:16px; backdrop-filter:blur(4px); }
+    .spinner-overlay.active { display:flex; }
+    .spinner { width:36px; height:36px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin 0.65s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .spinner-text { font-size:14px; font-weight:600; color:var(--text-secondary); }
+    .toast-container { position:fixed; top:16px; right:16px; z-index:2000; display:flex; flex-direction:column; gap:8px; max-width:400px; }
+    .toast { padding:12px 18px; border-radius:var(--radius); box-shadow:var(--shadow-lg); font-size:13px; font-weight:500; display:flex; align-items:center; gap:10px; animation:slideIn 0.35s ease; }
+    .toast-green { background:var(--green-bg); color:var(--green); border-color:var(--green); }
+    .toast-red { background:var(--red-bg); color:var(--red); border-color:var(--red); }
+    .toast-icon { width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .toast-icon svg { width:12px; height:12px; fill:#fff; }
+    @keyframes slideIn { from { transform:translateX(40px); opacity:0; } to { transform:translateX(0); opacity:1; } }
+    .dash-header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px; background:var(--card); border-radius:var(--radius-lg); padding:16px 24px; box-shadow:var(--shadow-sm); border:1px solid var(--border-light); }
+    .dash-title { font-size:18px; font-weight:700; color:var(--text-primary); }
+    .dash-subtitle { font-size:13px; color:var(--text-secondary); }
+    .dash-actions { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .stats-grid { grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; }
+    .stat-card { position:relative; overflow:hidden; padding:20px 22px; border:1px solid var(--border-light); border-radius:var(--radius-lg); background:var(--card); box-shadow:var(--shadow-sm); transform-style:preserve-3d; transition:transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease, border-color .3s ease; will-change:transform; }
+    .stat-bar { position:absolute; top:0; left:0; right:0; height:3px; border-radius:var(--radius-lg) var(--radius-lg) 0 0; opacity:.85; }
+    .stat-card::before { content:''; position:absolute; inset:0; background:radial-gradient(120% 120% at 100% 0%, rgba(29,201,234,.10), transparent 55%); opacity:0; transition:opacity .3s ease; }
+    .stat-card:hover { box-shadow:var(--shadow-lg); border-color:var(--accent); transform:translateY(-4px); }
+    .stat-card:hover::before { opacity:1; }
+    .stat-card:hover .stat-num { color:var(--accent); }
+    .stat-accent { position:absolute; top:18px; right:18px; width:38px; height:38px; border-radius:12px; opacity:.16; }
+    .stat-icon { position:absolute; top:16px; right:16px; width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; background:var(--accent-bg); border:1px solid var(--border); color:var(--accent); }
+    .stat-icon svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .stat-num { font-size:30px; font-weight:800; letter-spacing:-1px; transition:color .3s ease; line-height:1.1; }
+    .stat-label { font-size:11px; color:var(--text-secondary); font-weight:700; text-transform:uppercase; letter-spacing:.6px; margin-top:4px; }
+    .stat-trend { font-size:11px; margin-top:8px; display:inline-flex; align-items:center; gap:4px; font-weight:600; }
+    .stat-trend.up { color:var(--green); }
+    .stat-trend.down { color:var(--red); }
+    .card-enter { animation:cardEnter 0.5s cubic-bezier(0.2,0.8,0.2,1) both; }
+    @keyframes cardEnter { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+    .card { background:var(--card); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); border:1px solid var(--border); margin-bottom:20px; }
+    .card-header { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; border-bottom:1px solid var(--border); }
+    .card-title { font-size:16px; font-weight:600; color:var(--text-primary); }
+    .card-body { padding:20px 24px; }
+    .table-wrap { overflow-x:auto; border:1px solid var(--border-light); border-radius:var(--radius); }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th { background:var(--bg); padding:12px 14px; text-align:left; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-secondary); border-bottom:1.5px solid var(--border); white-space:nowrap; }
+    tr:hover td { background:var(--bg); }
+    tr:last-child td { border-bottom:none; }
+    .tabs { display:flex; gap:4px; background:var(--card); border-radius:var(--radius-lg); padding:6px; box-shadow:var(--shadow-sm); border:1px solid var(--border); margin-bottom:20px; flex-wrap:wrap; }
+    .tab-btn { padding:10px 20px; border:none; background:transparent; cursor:pointer; font-size:13px; font-weight:600; font-family:var(--font); color:var(--text-secondary); border-radius:var(--radius); transition:var(--transition); }
+    .tab-btn:hover { background:var(--bg-elevated); color:var(--text-primary); }
+    .tab-btn.active { background:var(--accent); color:#0f172a; }
+    td { padding:10px 14px; border-bottom:1px solid var(--border-light); vertical-align:middle; }
+    .empty-state { text-align:center; padding:60px 20px; color:var(--text-tertiary); }
+    .empty-title { font-size:16px; font-weight:600; color:var(--text-secondary); }
+    .badge { display:inline-flex; align-items:center; gap:5px; padding:3px 12px; border-radius:50px; font-size:11px; font-weight:600; }
+    .badge-blue { background:var(--accent-bg); color:var(--accent); border:1px solid var(--accent); }
+    .tick-yes { color:var(--green); font-weight:700; font-size:16px; line-height:1; }
+    .action-col { position:sticky; right:0; background:var(--card-bg); z-index:2; box-shadow:-3px 0 6px rgba(0,0,0,0.05); }
+    .status-pill { display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:50px; font-size:11px; font-weight:600; }
+    .pill-orange { background:var(--orange-bg); color:var(--orange); }
+    .pill-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+    [data-theme="light"] .spinner-overlay { background:rgba(241,245,249,0.7); }
+    [data-theme="light"] .modal-overlay { background:rgba(15,23,42,0.35); }
+    [data-theme="light"] .btn-accent { color:#fff; }
+    [data-theme="light"] input, [data-theme="light"] select, [data-theme="light"] textarea, [data-theme="light"] input[type=date], [data-theme="light"] input[type=number] { background:var(--bg-elevated); }
+    [data-theme="light"] th { background:var(--bg); }
+    [data-theme="light"] .action-col { background:#fff; }
+    input[type=date] { color-scheme: dark; }
+    input[type=number] { color-scheme: dark; }
+    [data-theme="light"] input[type=date] { color-scheme: light; }
+    [data-theme="light"] input[type=number] { color-scheme: light; }
+
+    @media (max-width: 768px) {
+      .container, .tl-container { max-width: 100%; padding: 12px; }
+      .dash-header { padding: 12px 16px; }
+      .dash-title { font-size: 16px; }
+      .card-header { padding: 14px 16px; flex-direction: column; align-items: flex-start; gap: 10px; }
+      .card-title { font-size: 14px; }
+      .card-body { padding: 14px 16px; }
+      .btn { padding: 8px 14px; font-size: 12px; }
+      .btn-sm { padding: 6px 10px; font-size: 11px; }
+      .tabs { gap: 2px; padding: 4px; }
+      .tab-btn { padding: 8px 12px; font-size: 12px; }
+      .stats-grid { grid-template-columns: 1fr; gap: 10px; }
+      .modal { padding: 20px; margin: 16px; }
+      #tlGroupLabel { font-size: 11px; }
+
+      .table-wrap { border: none; border-radius: 0; overflow-x: visible; padding: 0; }
+      .table-wrap table, .table-wrap thead, .table-wrap tbody, .table-wrap th, .table-wrap td, .table-wrap tr { display: block; }
+      .table-wrap thead tr { position: absolute; top: -9999px; left: -9999px; }
+      .table-wrap tr { border: 1px solid var(--border-light); border-radius: var(--radius); padding: 14px; margin-bottom: 14px; background: var(--card); box-shadow: var(--shadow-sm); }
+      .table-wrap td { border: none; padding: 8px 0; position: relative; padding-left: 42%; display: flex; align-items: center; min-height: 28px; font-size: 12px; word-break: break-word; }
+      .table-wrap td:before { content: attr(data-label); position: absolute; left: 0; width: 38%; padding-right: 10px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; word-break: break-word; line-height: 1.3; }
+      .table-wrap td.action-col { padding-left: 0; justify-content: flex-start; position: static; right: auto; box-shadow: none; }
+      .table-wrap td.action-col:before { display: none; }
+      .table-wrap td .badge, .table-wrap td .status-pill { font-size: 10px; padding: 2px 8px; }
+      .table-wrap td .btn { width: 100%; justify-content: center; }
+      .card-header > div:last-child { width: 100%; }
+      .card-header input, .card-header select { width: 100% !important; }
+      .dash-actions { width: 100%; flex-wrap: wrap; }
+      .dash-actions .btn { flex: 1 1 auto; min-width: 0; }
+    }
+
+    #pwaInstallBtn {
+      display: none;
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 500;
+      background: var(--accent);
+      color: #0f172a;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: var(--transition);
+    }
+    #pwaInstallBtn:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    #pwaInstallBtn:active { transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<div id="spinnerOverlay" class="spinner-overlay">
+  <div class="spinner"></div>
+  <div class="spinner-text" id="spinnerText">Loading...</div>
+</div>
+<div id="toastContainer" class="toast-container"></div>
+
+<div id="loginView">
+    <div id="tlLoginModal" class="modal-overlay open" style="position:relative; backdrop-filter:none; background:transparent;">
+      <div class="modal">
+        <div style="text-align: center; margin-bottom: 16px;">
+            <img src="logo.webp" alt="UptoSkills" style="height:40px;width:auto;filter:drop-shadow(0 2px 8px rgba(29,201,234,0.3));">
+        </div>
+         <h3>Sr. TL Login</h3>
+        <p>Enter your credentials to access your team dashboard.</p>
+        <div class="form-group" style="margin-bottom:4px">
+          <label>Email ID</label>
+          <input type="email" id="tlEmail" placeholder="Enter User ID" onkeydown="if(event.key==='Enter')document.getElementById('tlPassword').focus()">
+        </div>
+        <div class="form-group" style="margin-bottom:4px">
+          <label>Password</label>
+          <input type="password" id="tlPassword" placeholder="Enter Password" onkeydown="if(event.key==='Enter')document.querySelector('#tlLoginModal .btn-accent').click()">
+        </div>
+        <div id="tlLoginError" style="color:var(--red);font-size:13px;margin-top:8px;min-height:20px"></div>
+        <div class="modal-actions">
+          <button class="btn btn-accent" onclick="tlLogin()">Login</button>
+        </div>
+        <div style="text-align:center; margin-top:12px;">
+            <a href="#" onclick="openForgotPassword('tl')" style="font-size:12px; color:var(--text-secondary); text-decoration:none;">Forgot Password?</a>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div id="otpModal" class="modal-overlay">
+  <div class="modal">
+    <h3>Enter Verification Code</h3>
+    <p>A One-Time Password (OTP) has been sent to <strong id="otpEmail">your email</strong>. Please enter it below.</p>
+    <div class="form-group">
+      <label>OTP Code</label>
+      <input type="text" id="otpInput" placeholder="6-digit code" onkeydown="if(event.key==='Enter')document.querySelector('#otpModal .btn-accent').click()">
+    </div>
+    <div style="text-align:right; font-size:12px; margin-top:-8px; margin-bottom:8px;">
+        <a href="#" id="resendOtpLink" onclick="resendOtp()" style="color:var(--accent); text-decoration:none;">Resend OTP</a>
+        <span id="resendOtpTimer" style="color:var(--text-secondary); display:none;">Resend in 60s</span>
+    </div>
+    <div id="otpError" style="color:var(--red);font-size:13px;margin-top:8px;min-height:20px"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('otpModal')">Cancel</button>
+      <button class="btn btn-accent" onclick="verifyOtp()">Verify & Login</button>
+    </div>
+  </div>
+</div>
+
+<div id="forgotPasswordModal" class="modal-overlay">
+  <div class="modal">
+    <h3>Forgot Password</h3>
+    <p>Enter your email address and we'll send you an OTP to reset your password.</p>
+    <div class="form-group">
+      <label>Email ID</label>
+      <input type="email" id="forgotEmail" placeholder="Enter your login email">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('forgotPasswordModal');openModal('tlLoginModal')">Cancel</button>
+      <button class="btn btn-accent" onclick="submitForgotPassword()">Send OTP</button>
+    </div>
+  </div>
+</div>
+
+<div id="resetPasswordOtpModal" class="modal-overlay">
+  <div class="modal">
+    <h3>Reset Password</h3>
+    <p>An OTP has been sent to your email. Enter it below to set a new password.</p>
+    <input type="hidden" id="resetOtpEmail">
+    <div class="form-group"><label>OTP Code</label><input type="text" id="resetOtpCode" placeholder="6-digit code"></div>
+    <div class="form-group"><label>New Password</label><input type="password" id="resetOtpNewPass" placeholder="Min. 6 characters"></div>
+    <div style="text-align:right; font-size:12px; margin-top:-8px; margin-bottom:8px;">
+        <a href="#" id="resendResetOtpLink" onclick="resendResetOtp()" style="color:var(--accent); text-decoration:none;">Resend OTP</a>
+        <span id="resendResetOtpTimer" style="color:var(--text-secondary); display:none;">Resend in 60s</span>
+    </div>
+    <div class="form-group"><label>Confirm New Password</label><input type="password" id="resetOtpConfirmPass"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('resetPasswordOtpModal')">Cancel</button>
+      <button class="btn btn-accent" onclick="submitResetPasswordWithOtp()">Reset Password</button>
+    </div>
+  </div>
+</div>
+
+<div id="changePasswordModal" class="modal-overlay">
+    <div class="modal">
+        <h3>Change Password</h3>
+        <input type="hidden" id="changePassId">
+        <div class="form-group"><label>Old Password</label><input type="password" id="changeOldPass"></div>
+        <div class="form-group"><label>New Password</label><input type="password" id="changeNewPass" placeholder="Min. 6 characters"></div>
+        <div class="form-group"><label>Confirm New Password</label><input type="password" id="changeConfirmPass"></div>
+        <div class="modal-actions">
+            <button class="btn btn-ghost" onclick="closeModal('changePasswordModal')">Cancel</button>
+            <button class="btn btn-accent" onclick="submitChangePassword()">Update Password</button>
+        </div>
+    </div>
+</div>
+
+<div id="tlScreen" style="display:none">
+  <div class="container tl-container">
+    <div class="dash-header">
+      <div class="dash-header-left">
+        <div style="display:flex;align-items:center;gap:10px">
+          <img src="logo.webp" alt="UptoSkills" style="height:32px;width:auto;filter:drop-shadow(0 2px 6px rgba(29,201,234,0.25));">
+          <div>
+            <div class="dash-title">Sr. TL Dashboard</div>
+            <div class="dash-subtitle" id="tlGroupLabel">Project Group Name: —</div>
+          </div>
+        </div>
+      </div>
+      <div class="dash-actions">
+        <button class="btn btn-ghost btn-sm" onclick="toggleTheme()" id="themeBtnTL" title="Toggle light / dark mode">
+          <svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"></svg>
+          <span id="themeLabelTL">Light</span>
+        </button>
+        <button class="btn btn-sm btn-accent" onclick="refreshAllTL()" title="Refresh all tabs">↻ Refresh All</button>
+        <button class="btn btn-sm btn-blue" onclick="openChangePassword('tl')">Change Password</button>
+        <button class="btn btn-sm btn-red" onclick="tlLogout()">Logout</button>
+      </div>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTLTab('tabTLInterns', this)">My Interns</button>
+      <button class="tab-btn" onclick="switchTLTab('tabTLRequests', this)">Change Requests <span id="tlRequestCountBadge" class="badge badge-blue" style="display:none; padding: 2px 6px; font-size: 10px;"></span></button>
+      <button class="tab-btn" onclick="switchTLTab('tabHRRequests', this)">HR Requests</button>
+    </div>
+
+    <div id="tabTLInterns" class="tab-content">
+      <div class="stats-grid" id="tlStatsGrid"></div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Intern Details <span id="tlCount" class="badge badge-blue" style="font-size:11px"></span></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <input type="text" id="tlSearch" placeholder="Search interns..." onkeyup="tlFilter()" style="width:220px">
+            <input type="date" id="tlFromDate" onchange="tlFilter()" title="From Date" style="width:150px">
+            <input type="date" id="tlToDate" onchange="tlFilter()" title="To Date" style="width:150px">
+            <select id="tlStatusFilter" onchange="tlFilter()" style="width:140px">
+              <option value="">All Status</option>
+              <option value="Active">Active</option>
+              <option value="Completed">Completed</option>
+              <option value="Terminated">Terminated</option>
+              <option value="Resigned">Resigned</option>
+            </select>
+            <button class="btn btn-sm btn-ghost" onclick="tlClearFilters()" title="Clear filters">Clear Filters</button>
+            <button class="btn btn-sm btn-accent" onclick="loadTLInterns()">↻ Refresh</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-wrap">
+            <table>
+              <thead id="tlHead"></thead>
+              <tbody id="tlBody"></tbody>
+            </table>
+          </div>
+          <div id="tlEmpty" class="empty-state" style="display:none;padding:40px"><div class="empty-title">No interns assigned to your group</div></div>
+        </div>
+      </div>
+    </div>
+    <div id="tabTLRequests" class="tab-content" style="display:none;">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Intern Change Requests</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-sm btn-accent" onclick="loadTLChangeRequests()">↻ Refresh</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Submitted</th><th>Intern Code</th><th>Intern Name</th><th>Request Type</th><th>Details</th><th>Status</th><th class="action-col">Action</th></tr></thead>
+            <tbody id="tlRequestsBody"></tbody>
+          </table>
+        </div>
+        <div id="tlRequestsEmpty" class="empty-state" style="display:none;padding:40px"><div class="empty-title">No pending requests for your group</div></div>
+      </div>
+    </div>
+
+    <div id="tabHRRequests" class="tab-content" style="display:none;">
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-header"><div class="card-title">Raise HR Request</div></div>
+        <div class="card-body">
+          <div class="form-group" style="margin-bottom:8px">
+            <label>Subject</label>
+            <input type="text" id="tlHrRequestSubject" placeholder="Enter subject">
+          </div>
+          <div class="form-group" style="margin-bottom:8px">
+            <label>Remarks</label>
+            <textarea id="tlHrRequestRemarks" rows="3" placeholder="Enter remarks"></textarea>
+          </div>
+          <div class="form-group" style="margin-bottom:8px">
+            <label>Document Upload (Optional)</label>
+            <input type="file" id="tlHrRequestDocument">
+          </div>
+          <button class="btn btn-accent" onclick="submitTLHRRequest()">Submit Request</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">My HR Requests</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-sm btn-accent" onclick="loadTLHRRequests()">↻ Refresh</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Submitted</th><th>Subject</th><th>Remarks</th><th>Documents</th><th>Status</th><th>HR Remarks</th><th>HR Documents</th></tr></thead>
+            <tbody id="tlHRRequestsBody"></tbody>
+          </table>
+        </div>
+        <div id="tlHRRequestsEmpty" class="empty-state" style="display:none;padding:40px"><div class="empty-title">No HR requests submitted yet</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tlStatusModal" class="modal-overlay">
+  <div class="modal">
+    <h3>Update Current Status</h3>
+    <p id="tlStatusSub">Change the current status for this intern.</p>
+    <div class="form-group">
+      <label>Current Status</label>
+      <select id="tlNewStatus">
+        <option value="Active">Active</option>
+        <option value="Completed">Completed</option>
+        <option value="Terminated">Terminated</option>
+        <option value="Resigned">Resigned</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Last Working Date</label>
+      <input type="date" id="tlLastWorkingDate">
+    </div>
+    <div class="form-group">
+      <label>Last Rating (1-10)</label>
+      <input type="number" id="tlLastRating" step="0.1" min="1" max="10" placeholder="e.g. 7.5">
+    </div>
+    <div class="form-group">
+      <label>Remark</label>
+      <textarea id="tlRemark" rows="3" placeholder="Add a remark (optional)"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('tlStatusModal')">Cancel</button>
+      <button class="btn btn-accent" onclick="tlSaveStatus()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div id="tlForwardRequestModal" class="modal-overlay">
+  <div class="modal">
+    <h3>Forward Request to HR</h3>
+    <p>Review the intern's request. You can approve and forward it to HR, or reject it with a reason for the intern.</p>
+    <input type="hidden" id="tlForwardRowNum">
+    <div class="form-group">
+      <label>Your Remark</label>
+      <textarea id="tlForwardRemark" rows="3" placeholder="Add a remark for HR (if forwarding) or a reason for the intern (if rejecting)."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('tlForwardRequestModal')">Cancel</button>
+      <button class="btn btn-red" onclick="submitRejectByTL()">Reject</button>
+      <button class="btn btn-accent" onclick="submitForwardToHR()">Forward to HR</button>
+    </div>
+  </div>
+</div>
+
+<!-- PWA INSTALL FLOATING BUTTON -->
+<button id="pwaInstallBtn" onclick="installPWA()" title="Install App">
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+    <polyline points="7 10 12 15 17 10"></polyline>
+    <line x1="12" y1="15" x2="12" y2="3"></line>
+  </svg>
+  Install App
+</button>
+
+<script>
+  /* ============================================================
+     NETLIFY / EXTERNAL HOSTING BACKEND CONFIG
+     IMPORTANT: You must deploy the tllogin.gs script as a new
+     web app and paste its 'exec' URL here.
+     ============================================================ */
+  var BACKEND_URL = 'https://script.google.com/macros/s/AKfycbwPIRJD593yNkx-whtrTSzt6pQg94V97W1XD88K1Nusqf0ShbygvIqRJkJwIoSaMwcG/exec';
+  var API_TOKEN = null;
+  var apiTokenReady = false;
+
+  var API_MAP = {
+    getFrontendConfig: function() { return { action: 'getFrontendConfig' }; },
+    verifyTLLogin: function(a){ return { action: 'verifyTLLogin', email: a[0], password: a[1] }; },
+    sendOtp: function(a){ return { action: 'sendOtp', email: a[0], name: a[1], type: a[2] }; },
+    verifyOtp: function(a){ return { action: 'verifyOtp', id: a[0], otp: a[1], type: a[2] }; },
+    fetchTLInterns: function(a){ return { action: 'fetchTLInterns', groupName: a[0] }; },
+    updateInternFullRecord: function(a){ return { action: 'updateInternFullRecord', rowNum: a[0], fields: a[1] }; },
+    forgotPassword: function(a){ return { action: 'forgotPassword', email: a[0] }; },
+    resetPasswordWithOtp: function(a){ return { action: 'resetPasswordWithOtp', email: a[0], otp: a[1], newPassword: a[2] }; },
+    changePassword: function(a){ return { action: 'changePassword', id: a[0], oldPassword: a[1], newPassword: a[2] }; },
+    fetchTLChangeRequests: function(a){ return { action: 'fetchTLChangeRequests', groupName: a[0] }; },
+    forwardRequestToHR: function(a){ return { action: 'forwardRequestToHR', rowNum: a[0], remark: a[1] }; },
+    rejectChangeRequestByTL: function(a){ return { action: 'rejectChangeRequestByTL', rowNum: a[0], reason: a[1] }; },
+    submitTLRequest: function(a){ return { action: 'submitTLRequest', groupName: a[0], email: a[1], subject: a[2], remarks: a[3], documentUrl: a[4] }; },
+    fetchTLRequests: function(a){ return { action: 'fetchTLRequests', email: a[0] }; },
+    uploadFile: function(a){ return { action: 'uploadFile', base64Data: a[0], fileName: a[1], mimeType: a[2] }; },
+    resetInternPassword: function(a){ return { action: 'resetInternPassword', internCode: a[0] }; }
+  };
+
+  function _gsExecute(fnName, args, successCb, failureCb) {
+    var spec = API_MAP[fnName];
+    if (!spec) {
+      console.error('Unknown backend function: ' + fnName);
+      if (failureCb) failureCb('Unknown backend function: ' + fnName);
+      return;
+    }
+    var mapped = spec(args || []);
+    mapped.__token = API_TOKEN;
+
+    if (!BACKEND_URL || BACKEND_URL === 'YOUR_TLLOGIN_GS_WEB_APP_URL_HERE') {
+        var msg = 'The backend URL is not configured in tllogin.html. Please deploy tllogin.gs and set the BACKEND_URL variable.';
+        console.error(msg);
+        toast(msg, 'red');
+        if (failureCb) failureCb(msg);
+        return;
+    }
+
+    var attempt = 0;
+    var maxAttempts = 2;
+
+    function callBackend() {
+      attempt++;
+      fetch(BACKEND_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(mapped),
+        mode: 'cors'
+      })
+      .then(function(response) {
+        if (!response.ok) {
+          var status = response.status || 'unknown';
+          var statusText = response.statusText || 'Network error';
+          if (attempt < maxAttempts && (status === 0 || status >= 500)) {
+            return callBackend();
+          }
+          throw new Error('Server error (' + status + '): ' + statusText);
+        }
+        return response.json();
+      })
+      .then(function(data) {
+        if (data && data.success === false && data.error) {
+          if (failureCb) failureCb(data.error);
+          else if (successCb) successCb(data);
+        } else if (successCb) {
+          successCb(data);
+        }
+      })
+      .catch(function(error) {
+        console.error('Fetch Error for ' + fnName + ' (attempt ' + attempt + '):', error);
+        var message = error.message || String(error);
+        if (failureCb) failureCb(message);
+      });
+    }
+
+    callBackend();
+  }
+
+  function makeGsRunProxy() {
+    var state = { success: null, failure: null };
+    var handler = {
+      get: function(t, prop) {
+        if (prop === 'withSuccessHandler') return function(fn){ state.success = fn; return proxy; };
+        if (prop === 'withFailureHandler') return function(fn){ state.failure = fn; return proxy; };
+        return function(){
+          _gsExecute(prop, Array.prototype.slice.call(arguments), state.success, state.failure);
+          return proxy;
+        };
+      }
+    };
+    var proxy = new Proxy({}, handler);
+    return proxy;
+  }
+  var google = { script: { get run() { return makeGsRunProxy(); } } };
+
+  var tlGroup = '', tlEmail = '', tlInterns = [], tlHeaderKeys = [], tlHeaders = [], tlFiltered = [], tlStatusRow = 0, tlChangeRequests = [], tlHRRequests = [];
+  var tlInternsLoaded = false, tlChangeRequestsLoaded = false, tlHRRequestsLoaded = false;
+  var otpContext = { id: '', type: '' };
+
+  function requireToken() {
+    if (!apiTokenReady) {
+      toast('Backend is initializing. Please wait a moment and try again.', 'orange');
+      return false;
+    }
+    return true;
+  }
+  var TL_COLS = [
+    { key: 'InternCode', label: 'Intern Code' }, { key: 'OnboardingDate', label: 'Onboarding Date' },
+    { key: 'Name', label: 'Name' }, { key: 'EmailID', label: 'Email ID' }, { key: 'MobileNo', label: 'Mobile No' },
+    { key: 'WhatsappNo', label: 'WhatsApp No' }, { key: 'DomainName', label: 'Domain Name' },
+    { key: 'StartDate', label: 'Start Date' }, { key: 'EndDate', label: 'End Date' },
+    { key: 'CurrentStatus', label: 'Current Status' }, { key: 'StatusReason', label: 'Status Reason' }
+  ];
+
+  document.addEventListener('DOMContentLoaded', function() {
+    getApiToken();
+    initTheme();
+    setupPWA();
+    document.getElementById('tlEmail').focus();
+  });
+
+  function getApiToken() {
+    google.script.run
+      .withSuccessHandler(function(config) {
+        if (config && config.token) {
+          API_TOKEN = config.token;
+          apiTokenReady = true;
+          console.log("API Token received and set.");
+        } else {
+          console.error("Failed to retrieve API token from backend.");
+          toast('Backend connection failed. Please check the app deployment and try again.', 'red');
+        }
+      })
+      .withFailureHandler(function(e) {
+        console.error('getApiToken failure:', e);
+        toast('Cannot reach backend: ' + (e || 'Network error. Check CORS / web app deployment.'), 'red');
+      })
+      .getFrontendConfig();
+  }
+
+  var SUN_SVG = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="4.22" x2="19.78" y2="5.64"/>';
+  var MOON_SVG = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+
+  function initTheme() {
+    var stored = 'dark';
+    try { stored = localStorage.getItem('hr_portal_theme') || 'dark'; } catch (e) {}
+    applyTheme(stored);
+  }
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    var iconHtml = theme === 'dark' ? SUN_SVG : MOON_SVG;
+    var label = theme === 'dark' ? 'Light' : 'Dark';
+    var i1 = document.getElementById('themeBtnTL'); if (i1) i1.querySelector('svg').innerHTML = iconHtml;
+    var l1 = document.getElementById('themeLabelTL'); if (l1) l1.textContent = label;
+  }
+  function toggleTheme() {
+    var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+    var next = cur === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try { localStorage.setItem('hr_portal_theme', next); } catch (e) {}
+  }
+
+  function showSpinner(t) { document.getElementById('spinnerText').textContent = t || 'Loading...'; document.getElementById('spinnerOverlay').classList.add('active'); }
+  function hideSpinner() { document.getElementById('spinnerOverlay').classList.remove('active'); }
+  function toast(msg, type) {
+    type = type || 'accent';
+    var c = document.getElementById('toastContainer');
+    var t = document.createElement('div');
+    t.className = 'toast toast-' + type;
+    var iconSvg = (type === 'green') ? '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>' : '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    t.innerHTML = '<span class="toast-icon" style="background:'+type+'">'+iconSvg+'</span> ' + msg;
+    c.appendChild(t);
+    setTimeout(function() { t.style.opacity = '0'; t.style.transform = 'translateX(40px)'; t.style.transition = 'all 0.3s'; setTimeout(function() { if (t.parentNode) t.remove(); }, 300); }, 3500);
+  }
+
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+  function openModal(id) { var el = document.getElementById(id); if (el) el.classList.add('open'); }
+
+  function tlLogin() {
+    if (!requireToken()) return;
+    var email = document.getElementById('tlEmail').value.trim();
+    var pass = document.getElementById('tlPassword').value;
+    var err = document.getElementById('tlLoginError');
+    if (!email || !pass) { err.textContent = 'Email and password required'; return; }
+    err.textContent = '';
+    showSpinner('Verifying…');
+    google.script.run
+      .withSuccessHandler(function(r) {
+        hideSpinner();
+        if (r && r.success && r.authenticated) {
+          proceedToTLDashboard(r.groupName, r.email || email);
+        } else if (r && r.success && r.otpSent) {
+          closeModal('tlLoginModal');
+          otpContext = { id: email, type: 'tl', name: 'Sr. Team Lead' };
+          document.getElementById('otpEmail').textContent = r.email;
+          document.getElementById('otpInput').value = '';
+          document.getElementById('otpError').textContent = '';
+          openModal('otpModal');
+          startOtpResendCooldown();
+          toast('OTP sent to your group email', 'green');
+        } else {
+          err.textContent = (r && r.error) || 'Invalid email or password';
+        }
+      })
+      .withFailureHandler(function(e) { hideSpinner(); err.textContent = 'Error: ' + e; })
+      .verifyTLLogin(email, pass);
+  }
+
+  var otpResendTimer = null;
+  function startOtpResendCooldown() {
+    var link = document.getElementById('resendOtpLink');
+    var timerSpan = document.getElementById('resendOtpTimer');
+    if (!link || !timerSpan) return;
+    if (otpResendTimer) clearInterval(otpResendTimer);
+    var seconds = 60;
+    link.style.display = 'none';
+    timerSpan.style.display = 'inline';
+    timerSpan.textContent = 'Resend in ' + seconds + 's';
+    otpResendTimer = setInterval(function() {
+      seconds--;
+      if (seconds <= 0) { clearInterval(otpResendTimer); otpResendTimer = null; link.style.display = 'inline'; timerSpan.style.display = 'none'; }
+      else { timerSpan.textContent = 'Resend in ' + seconds + 's'; }
+    }, 1000);
+  }
+
+  function resendOtp() {
+    if (!requireToken()) return;
+    if (otpResendTimer) return;
+    showSpinner('Resending OTP...');
+    google.script.run.withSuccessHandler(function(){ hideSpinner(); toast('New OTP sent!', 'green'); startOtpResendCooldown(); }).withFailureHandler(function(e){ hideSpinner(); toast('Error: '+e, 'red'); })
+      .sendOtp(otpContext.id, otpContext.name, otpContext.type);
+  }
+
+  function verifyOtp() {
+    if (!requireToken()) return;
+    var otp = document.getElementById('otpInput').value.trim();
+    var errEl = document.getElementById('otpError');
+    if (!otp) { errEl.textContent = 'Please enter the OTP'; return; }
+    errEl.textContent = '';
+    showSpinner('Verifying OTP...');
+    google.script.run
+      .withSuccessHandler(function(r) {
+        hideSpinner();
+        if (r && r.success && r.authenticated) {
+          closeModal('otpModal');
+          if (otpResendTimer) clearInterval(otpResendTimer);
+          proceedToTLDashboard(r.groupName, otpContext.id);
+        } else {
+          errEl.textContent = (r && r.error) || 'OTP verification failed.';
+        }
+      })
+      .withFailureHandler(function(e) { hideSpinner(); errEl.textContent = 'Error: ' + e; })
+      .verifyOtp(otpContext.id, otp, otpContext.type);
+  }
+
+  function proceedToTLDashboard(groupName, email) {
+    if (!requireToken()) return;
+    tlGroup = groupName;
+    tlEmail = email || '';
+    document.getElementById('loginView').style.display = 'none';
+    document.getElementById('tlScreen').style.display = 'block';
+    document.getElementById('tlGroupLabel').textContent = 'Project Group Name: ' + groupName;
+    tlInternsLoaded = false;
+    tlChangeRequestsLoaded = false;
+    tlHRRequestsLoaded = false;
+    loadTLInterns();
+    setTimeout(function() {
+      if (!tlChangeRequestsLoaded) loadTLChangeRequests();
+      if (!tlHRRequestsLoaded) loadTLHRRequests();
+    }, 0);
+  }
+
+  function tlLogout() {
+    tlGroup = '';
+    tlEmail = '';
+    tlInterns = [];
+    tlInternsLoaded = false;
+    tlChangeRequestsLoaded = false;
+    tlHRRequestsLoaded = false;
+    document.getElementById('tlScreen').style.display = 'none';
+    document.getElementById('loginView').style.display = 'block';
+    openModal('tlLoginModal');
+  }
+
+  function loadTLInterns() {
+    showSpinner('Loading interns…');
+    google.script.run
+      .withSuccessHandler(function(r) {
+        hideSpinner();
+        if (r && r.data) {
+          tlInterns = r.data.sort(function(a, b) { return (b.rowNumber || 0) - (a.rowNumber || 0); });
+          tlHeaders = r.headers || [];
+          tlHeaderKeys = r.headerKeys || [];
+          tlInternsLoaded = true;
+        } else { tlInterns = []; }
+        tlFiltered = tlInterns.slice();
+        buildTLStats();
+        renderTLTable();
+      })
+      .withFailureHandler(function(e) { hideSpinner(); toast('Error: ' + e, 'red'); })
+      .fetchTLInterns(tlGroup);
+  }
+
+  function refreshAllTL() {
+    loadTLInterns();
+    loadTLChangeRequests();
+    loadTLHRRequests();
+  }
+
+  function hexA(hex, a) {
+    if (!hex || hex.charAt(0) !== '#') return hex;
+    var r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+    return 'rgba('+r+','+g+','+b+','+a+')';
+  }
+  function buildTLStats() {
+    var grid = document.getElementById('tlStatsGrid');
+    if (!grid) return;
+    var total = (tlInterns || []).length;
+    var active = 0, completed = 0, terminated = 0, resigned = 0;
+    for (var i = 0; i < total; i++) {
+      var s = String(tlInterns[i]['CurrentStatus'] || tlInterns[i]['Current Status'] || '').toLowerCase();
+      if (s === 'active') active++;
+      else if (s === 'completed') completed++;
+      else if (s === 'terminated') terminated++;
+      else if (s === 'resigned') resigned++;
+    }
+    var cards = [
+      { l:'Total Intern', n:total, c:'#1dc9ea', ic:'users' },
+      { l:'Active', n:active, c:'#22c55e', ic:'active' },
+      { l:'Completed', n:completed, c:'#14b8a6', ic:'done' },
+      { l:'Terminated', n:terminated, c:'#ef4444', ic:'term' },
+      { l:'Resigned', n:resigned, c:'#64748b', ic:'resign' }
+    ];
+    grid.innerHTML = '';
+    for (var ci = 0; ci < cards.length; ci++) {
+      var cd = cards[ci];
+      var el = document.createElement('div');
+      el.className = 'stat-card card-enter';
+      el.style.animationDelay = (ci * 45) + 'ms';
+      var iconSvg = '';
+      switch(cd.ic) {
+        case 'users':
+          iconSvg = '<circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.85"/>';
+          break;
+        case 'active':
+          iconSvg = '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>';
+          break;
+        case 'done':
+          iconSvg = '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>';
+          break;
+        case 'term':
+          iconSvg = '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>';
+          break;
+        case 'resign':
+          iconSvg = '<circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/>';
+          break;
+      }
+      el.innerHTML =
+        '<div class="stat-bar" style="background:linear-gradient(90deg,'+cd.c+','+hexA(cd.c,0.2)+')"></div>' +
+        '<div class="stat-accent" style="background:'+cd.c+';box-shadow:0 0 24px '+cd.c+'"></div>' +
+        '<div class="stat-icon" style="color:'+cd.c+';background:'+hexA(cd.c,0.12)+';border-color:'+hexA(cd.c,0.3)+'"><svg viewBox="0 0 24 24">'+iconSvg+'</svg></div>' +
+        '<div class="stat-num">'+cd.n+'</div>' +
+        '<div class="stat-label">'+cd.l+'</div>';
+      grid.appendChild(el);
+    }
+  }
+  function tlFilter() { renderTLTable(); }
+  function tlClearFilters() {
+    document.getElementById('tlSearch').value = '';
+    document.getElementById('tlFromDate').value = '';
+    document.getElementById('tlToDate').value = '';
+    document.getElementById('tlStatusFilter').value = '';
+    renderTLTable();
+  }
+  function esc(s) { return (s || '').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function fmtDate(v) { if (!v) return ''; var d = new Date(v); if (isNaN(d.getTime())) return v; return d.toLocaleDateString('en-GB'); }
+
+  function renderTLTable() {
+    var body = document.getElementById('tlBody');
+    var head = document.getElementById('tlHead');
+    if (!head || !body) return;
+    var q = (document.getElementById('tlSearch').value || '').toLowerCase();
+    var fromDateVal = document.getElementById('tlFromDate').value;
+    var toDateVal = document.getElementById('tlToDate').value;
+    var statusVal = (document.getElementById('tlStatusFilter').value || '').trim();
+    tlFiltered = (tlInterns || []).filter(function(r) {
+      if (q && !TL_COLS.some(function(c) { return String(r[c.key] || '').toLowerCase().indexOf(q) !== -1; })) return false;
+      if (fromDateVal || toDateVal) {
+        var rawDate = String(r['OnboardingDate'] || '').trim();
+        if (!rawDate) return false;
+        var d = new Date(rawDate);
+        if (isNaN(d.getTime())) return false;
+        if (fromDateVal) {
+          var fromD = new Date(fromDateVal);
+          if (d < fromD) return false;
+        }
+        if (toDateVal) {
+          var toD = new Date(toDateVal);
+          if (d > toD) return false;
+        }
+      }
+      if (statusVal && String(r['CurrentStatus'] || '').trim().toLowerCase() !== statusVal.toLowerCase()) return false;
+      return true;
+    });
+    document.getElementById('tlCount').textContent = tlFiltered.length;
+    var hh = '<tr>' + TL_COLS.map(function(c){ return '<th>' + esc(c.label) + '</th>'; }).join('') + '<th class="action-col">Action</th></tr>';
+    head.innerHTML = hh;
+    if (!tlFiltered.length) { body.innerHTML = ''; document.getElementById('tlEmpty').style.display = 'block'; return; }
+    document.getElementById('tlEmpty').style.display = 'none';
+    var h = '';
+    for (var j = 0; j < tlFiltered.length; j++) {
+      var r = tlFiltered[j];
+      var rn = r.rowNumber;
+      h += '<tr>';
+      for (var ci = 0; ci < TL_COLS.length; ci++) {
+        var c = TL_COLS[ci];
+        var raw = r[c.key] || '';
+        var disp = (c.key.includes('Date')) ? fmtDate(raw) : esc(raw);
+        h += '<td data-label="' + esc(c.label) + '" title="' + esc(raw) + '">' + disp + '</td>';
+      }
+      h += '<td class="action-col" data-label="Action">';
+      if (String(r['TLStatusLocked'] || '').toLowerCase() === 'yes') {
+        h += '<span class="tick-yes" title="Status locked">&#10003; Locked</span> ';
+      } else {
+        h += '<button class="btn btn-sm btn-blue" onclick="openTLStatus(' + rn + ')">Change Status</button> ';
+      }
+      h += '<button class="btn btn-sm btn-red" onclick="resetInternPasswordByTL(\'' + esc(r['InternCode'] || '').replace(/'/g, "\\'") + '\', \'' + esc(r['Name'] || 'Intern').replace(/'/g, "\\'") + '\')">Reset Password</button>';
+      h += '</td></tr>';
+    }
+    body.innerHTML = h;
+  }
+
+  function openTLStatus(rn) {
+    var r = tlInterns.find(function(i) { return i.rowNumber == rn; });
+    if (!r) return;
+    if (String(r['TLStatusLocked'] || '').toLowerCase() === 'yes') { toast('Status already locked', 'orange'); return; }
+    tlStatusRow = rn;
+    document.getElementById('tlStatusSub').textContent = (r.Name || 'Intern') + ' — ' + (r.InternCode || '');
+    document.getElementById('tlNewStatus').value = r.CurrentStatus || 'Active';
+    document.getElementById('tlRemark').value = r.StatusReason || '';
+    openModal('tlStatusModal');
+  }
+
+  function tlSaveStatus() {
+    var status = document.getElementById('tlNewStatus').value;
+    var remark = document.getElementById('tlRemark').value.trim();
+    var lastWorkingDate = document.getElementById('tlLastWorkingDate').value;
+    var lastRating = document.getElementById('tlLastRating').value;
+    var originalStatus = tlInterns.find(function(i) { return i.rowNumber == tlStatusRow; });
+    var originalStatusVal = originalStatus ? originalStatus['CurrentStatus'] : '';
+
+    if (status === originalStatusVal) {
+      toast('Please change the status before saving.', 'red');
+      return;
+    }
+
+    if (lastWorkingDate) {
+      var today = new Date();
+      var yyyy = today.getFullYear();
+      var mm = String(today.getMonth() + 1).padStart(2, '0');
+      var dd = String(today.getDate()).padStart(2, '0');
+      var todayStr = yyyy + '-' + mm + '-' + dd;
+      if (lastWorkingDate > todayStr) {
+        toast('Last Working Date cannot be a future date.', 'red');
+        return;
+      }
+    } else {
+      toast('Last Working Date is required.', 'red');
+      return;
+    }
+
+    if (lastRating === '' || lastRating === null || lastRating === undefined) {
+      toast('Last Rating is required.', 'red');
+      return;
+    }
+    var ratingNum = parseFloat(lastRating);
+    if (isNaN(ratingNum) || ratingNum < 1 || ratingNum > 10) {
+      toast('Last Rating must be between 1 and 10.', 'red');
+      return;
+    }
+
+    if ((status === 'Resigned' || status === 'Terminated') && !remark) {
+      toast('Remark is required for Resigned or Terminated status.', 'red');
+      return;
+    }
+
+    var statusReason = lastWorkingDate + ' | ' + lastRating + ' | ' + remark;
+    showSpinner('Updating…');
+    google.script.run
+      .withSuccessHandler(function(res) {
+        hideSpinner();
+        closeModal('tlStatusModal');
+        if (res && res.success) { toast('Status updated (now locked)', 'green'); loadTLInterns(); }
+        else { toast('Error: ' + ((res && res.error) || 'Failed'), 'red'); }
+      })
+      .withFailureHandler(function(e) { hideSpinner(); closeModal('tlStatusModal'); toast('Error: ' + e, 'red'); })
+      .updateInternFullRecord(tlStatusRow, { 'Current Status': status, 'Status Reason': statusReason, 'TL Status Locked': 'Yes' });
+  }
+
+  function resetInternPasswordByTL(internCode, internName) {
+    if (!internCode) { toast('Intern Code is required.', 'red'); return; }
+    if (!confirm('Reset password for ' + (internName || 'this intern') + ' to their Intern Code (' + internCode + ')? They will be prompted to set a new password on next login.')) return;
+    showSpinner('Resetting password...');
+    google.script.run
+      .withSuccessHandler(function(r) {
+        hideSpinner();
+        if (r && r.success) {
+          toast(r.message || 'Password reset successfully.', 'green');
+        } else {
+          toast('Error: ' + ((r && r.error) || 'Failed to reset password.'), 'red');
+        }
+      })
+      .withFailureHandler(function(e) { hideSpinner(); toast('Error: ' + e, 'red'); })
+      .resetInternPassword(internCode);
+  }
+
+  function switchTLTab(id, btn) {
+    document.querySelectorAll('#tlScreen .tab-content').forEach(t => t.style.display = 'none');
+    document.querySelectorAll('#tlScreen .tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).style.display = 'block';
+    btn.classList.add('active');
+    if (id === 'tabTLRequests') {
+      if (!tlChangeRequestsLoaded) {
+        loadTLChangeRequests();
+        tlChangeRequestsLoaded = true;
+      }
+    } else if (id === 'tabHRRequests') {
+      if (!tlHRRequestsLoaded) {
+        loadTLHRRequests();
+        tlHRRequestsLoaded = true;
+      }
+    }
+  }
+
+  function loadTLChangeRequests() {
+    showSpinner('Loading requests...');
+    google.script.run
+      .withSuccessHandler(function(r) {
+        hideSpinner();
+        if (r && r.success) {
+          tlChangeRequests = r.data || [];
+          tlChangeRequestsLoaded = true;
+          renderTLChangeRequests();
+        } else {
+          toast('Error loading requests: ' + (r.error || 'Failed'), 'red');
+        }
+      })
+      .withFailureHandler(function(e) { hideSpinner(); toast('Error: ' + e, 'red'); })
+      .fetchTLChangeRequests(tlGroup);
+  }
+
+  function renderTLChangeRequests() {
+    var body = document.getElementById('tlRequestsBody'), empty = document.getElementById('tlRequestsEmpty'), badge = document.getElementById('tlRequestCountBadge');
+    if (!body || !empty || !badge) return;
+    var requests = tlChangeRequests || [];
+    badge.textContent = requests.length;
+    badge.style.display = requests.length > 0 ? 'inline-flex' : 'none';
+    if (requests.length === 0) { body.innerHTML = ''; empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+    var h = '';
+    requests.forEach(function(req) {
+      var rowNum = req[7];
+      h += `<tr><td data-label="Submitted">${esc(fmtDate(req[0]))}</td><td data-label="Intern Code"><span class="badge badge-blue">${esc(req[1])}</span></td><td data-label="Intern Name"><strong>${esc(req[2])}</strong></td><td data-label="Request Type">${esc(req[3])}</td><td data-label="Details" style="white-space:normal">${esc(req[4])}</td><td data-label="Status"><span class="status-pill pill-orange">${esc(req[5])}</span></td><td class="action-col" data-label="Action"><button class="btn btn-sm btn-accent" onclick="openForwardModal(${rowNum})">Action</button></td></tr>`;
+    });
+    body.innerHTML = h;
+  }
+
+  function openForwardModal(rowNum) {
+    document.getElementById('tlForwardRowNum').value = rowNum;
+    document.getElementById('tlForwardRemark').value = '';
+    openModal('tlForwardRequestModal');
+  }
+
+  function submitForwardToHR() {
+    var rowNum = document.getElementById('tlForwardRowNum').value;
+    var remark = document.getElementById('tlForwardRemark').value.trim();
+    showSpinner('Forwarding to HR...');
+    google.script.run
+      .withSuccessHandler(function(r) { hideSpinner(); if (r && r.success) { toast(r.message, 'green'); closeModal('tlForwardRequestModal'); loadTLChangeRequests(); } else { toast('Error: ' + (r.error || 'Failed'), 'red'); } })
+      .withFailureHandler(function(e) { hideSpinner(); toast('Error: ' + e, 'red'); }).forwardRequestToHR(rowNum, remark);
+  }
+
+  function submitRejectByTL() {
+    var rowNum = document.getElementById('tlForwardRowNum').value;
+    var reason = document.getElementById('tlForwardRemark').value.trim();
+    if (!reason) {
+      toast('A reason is required to reject a request.', 'red');
+      return;
+    }
+    showSpinner('Rejecting request...');
+    google.script.run
+      .withSuccessHandler(function(r) { hideSpinner(); if (r && r.success) { toast(r.message, 'green'); closeModal('tlForwardRequestModal'); loadTLChangeRequests(); } else { toast('Error: ' + (r.error || 'Failed'), 'red'); } })
+      .withFailureHandler(function(e) { hideSpinner(); toast('Error: ' + e, 'red'); })
+      .rejectChangeRequestByTL(rowNum, reason);
+  }
+
+  function openForgotPassword(type) {
+    closeModal('tlLoginModal');
+    document.getElementById('forgotEmail').value = '';
+    openModal('forgotPasswordModal');
+    document.getElementById('forgotEmail').focus();
+  }
+
+  function submitForgotPassword() {
+    var email = document.getElementById('forgotEmail').value.trim();
+    if (!email) { toast('Please enter your email address.', 'red'); return; }
+    showSpinner('Sending OTP...');
+    google.script.run
+      .withSuccessHandler(function(r) {
+        hideSpinner();
+        if (r && r.success && r.otpSent) {
+          closeModal('forgotPasswordModal');
+          document.getElementById('resetOtpEmail').value = r.email;
+          openModal('resetPasswordOtpModal');
+          toast('OTP sent to your email.', 'green');
+        } else {
+          toast('Error: ' + ((r && r.error) || 'Failed'), 'red');
+        }
+      })
+      .withFailureHandler(function(e) { hideSpinner(); toast('Error: ' + e, 'red'); })
+      .forgotPassword(email);
+  }
+
+  function submitResetPasswordWithOtp() {
+    var email = document.getElementById('resetOtpEmail').value;
+    var otp = document.getElementById('resetOtpCode').value.trim();
+    var newPass = document.getElementById('resetOtpNewPass').value;
+    var confirmPass = document.getElementById('resetOtpConfirmPass').value;
+    if (!otp || !newPass || newPass.length < 6 || newPass !== confirmPass) { toast('Please fill all fields correctly.', 'red'); return; }
+    showSpinner('Resetting password...');
+    google.script.run
+      .withSuccessHandler(function(r) {
+        hideSpinner();
+        if (r && r.success) { closeModal('resetPasswordOtpModal'); toast(r.message, 'green'); }
+        else { toast('Error: ' + ((r && r.error) || 'Failed'), 'red'); }
+      })
+      .withFailureHandler(function(e) { hideSpinner(); toast('Error: ' + e, 'red'); })
+      .resetPasswordWithOtp(email, otp, newPass);
+  }
+  
+  function openChangePassword(type) {
+    var id = document.getElementById('tlEmail').value;
+    document.getElementById('changePassId').value = id;
+    openModal('changePasswordModal');
+  }
+
+  function submitChangePassword() {
+    var id = document.getElementById('changePassId').value;
+    var oldPass = document.getElementById('changeOldPass').value;
+    var newPass = document.getElementById('changeNewPass').value;
+    var confirmPass = document.getElementById('changeConfirmPass').value;
+    if (!oldPass || !newPass || newPass.length < 6 || newPass !== confirmPass) { toast('Please fill all fields correctly.', 'red'); return; }
+    showSpinner('Changing password...');
+    google.script.run
+      .withSuccessHandler(function(r) { hideSpinner(); if (r && r.success) { toast(r.message, 'green'); closeModal('changePasswordModal'); } else { toast('Error: ' + ((r && r.error) || 'Failed'), 'red'); } })
+      .withFailureHandler(function(e) { hideSpinner(); toast('Error: ' + e, 'red'); })
+      .changePassword(id, oldPass, newPass);
+  }
+
+  function loadTLHRRequests() {
+    showSpinner('Loading Sr. TL Dashboard...');
+    google.script.run
+      .withSuccessHandler(function(r) {
+        hideSpinner();
+        if (r && r.success) {
+          tlHRRequests = r.data || [];
+          tlHRRequestsLoaded = true;
+          renderTLHRRequests();
+        } else {
+          toast('Error loading Sr. TL Dashboard: ' + (r.error || 'Failed'), 'red');
+        }
+      })
+      .withFailureHandler(function(e) { hideSpinner(); toast('Error: ' + e, 'red'); })
+      .fetchTLRequests(tlEmail);
+  }
+
+  function renderTLHRRequests() {
+    var body = document.getElementById('tlHRRequestsBody'), empty = document.getElementById('tlHRRequestsEmpty');
+    if (!body || !empty) return;
+    var requests = tlHRRequests || [];
+    if (requests.length === 0) { body.innerHTML = ''; empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+    var h = '';
+    requests.forEach(function(req) {
+      h += `<tr><td data-label="Submitted">${esc(fmtDate(req[0]))}</td><td data-label="Subject"><strong>${esc(req[3])}</strong></td><td data-label="Remarks" style="white-space:normal">${esc(req[4])}</td><td data-label="Documents">${req[5] ? '<a href="' + esc(req[5]) + '" target="_blank">View</a>' : '—'}</td><td data-label="Status">${esc(req[6])}</td><td data-label="HR Remarks" style="white-space:normal">${esc(req[7])}</td><td data-label="HR Documents">${req[8] ? '<a href="' + esc(req[8]) + '" target="_blank">View</a>' : '—'}</td></tr>`;
+    });
+    body.innerHTML = h;
+  }
+
+  function submitTLHRRequest() {
+    var subject = document.getElementById('tlHrRequestSubject').value.trim();
+    var remarks = document.getElementById('tlHrRequestRemarks').value.trim();
+    var fileInput = document.getElementById('tlHrRequestDocument');
+
+    if (!subject) { toast('Subject is required.', 'red'); return; }
+
+    function finishSubmit(documentUrl) {
+      showSpinner('Submitting request...');
+      google.script.run
+        .withSuccessHandler(function(r) {
+          hideSpinner();
+          if (r && r.success) {
+            toast('HR Request submitted successfully.', 'green');
+            document.getElementById('tlHrRequestSubject').value = '';
+            document.getElementById('tlHrRequestRemarks').value = '';
+            if (fileInput) fileInput.value = '';
+            loadTLHRRequests();
+          } else {
+            toast('Error: ' + ((r && r.error) || 'Failed'), 'red');
+          }
+        })
+        .withFailureHandler(function(e) { hideSpinner(); toast('Error: ' + e, 'red'); })
+        .submitTLRequest(tlGroup, tlEmail, subject, remarks, documentUrl || "");
+    }
+
+    if (fileInput && fileInput.files && fileInput.files[0]) {
+      var file = fileInput.files[0];
+      try {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            var dataUrl = e.target.result || '';
+            var base64 = dataUrl.indexOf(',') > -1 ? dataUrl.split(',')[1] : '';
+            if (!base64) {
+              finishSubmit('');
+              return;
+            }
+            showSpinner('Uploading document...');
+            google.script.run
+              .withSuccessHandler(function(uploadResult) {
+                hideSpinner();
+                if (uploadResult && uploadResult.success) {
+                  finishSubmit(uploadResult.url);
+                } else {
+                  finishSubmit('');
+                }
+              })
+              .withFailureHandler(function(err) { hideSpinner(); finishSubmit(''); })
+              .uploadFile(base64, file.name, file.type);
+          } catch (err) {
+            finishSubmit('');
+          }
+        };
+        reader.onerror = function() {
+          finishSubmit('');
+        };
+        reader.readAsDataURL(file);
+      } catch (err) {
+        finishSubmit('');
+      }
+    } else {
+      finishSubmit('');
+    }
+  }
+  
+  var deferredPrompt = null;
+
+  function hidePWAButton() {
+    var btn = document.getElementById('pwaInstallBtn');
+    if (btn) btn.style.display = 'none';
+  }
+
+  function setupPWA() {
+    // Hide button if app is already running in standalone/installed mode
+    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
+      hidePWAButton();
+      return;
+    }
+
+    // Register Service Worker for PWA eligibility
+    // Only register when page origin matches backend origin to avoid cross-origin errors
+    if ('serviceWorker' in navigator && BACKEND_URL) {
+      try {
+        var backendOrigin = new URL(BACKEND_URL).origin;
+        if (window.location.origin === backendOrigin) {
+          navigator.serviceWorker.register(BACKEND_URL + '?sw=1')
+            .then(function(reg) { console.log('PWA Service Worker registered:', reg); })
+            .catch(function(err) { console.log('Service Worker registration failed:', err); });
+        } else {
+          console.log('Skipping Service Worker registration: page origin (' + window.location.origin + ') does not match backend origin (' + backendOrigin + ')');
+        }
+      } catch (e) {
+        console.log('Service Worker registration skipped:', e);
+      }
+    }
+
+    // Capture install prompt event and display the install button
+    window.addEventListener('beforeinstallprompt', function(e) {
+      e.preventDefault();
+      deferredPrompt = e;
+      var btn = document.getElementById('pwaInstallBtn');
+      if (btn) btn.style.display = 'inline-block';
+    });
+
+    // Hide button once app installation is complete
+    window.addEventListener('appinstalled', function() {
+      deferredPrompt = null;
+      hidePWAButton();
+    });
+  }
+
+  function installPWA() {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(choiceResult) {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('PWA installed');
+      }
+      deferredPrompt = null;
+      hidePWAButton();
+    });
+  }
+</script>
+
+<div style="text-align:center; padding: 16px 20px; color: var(--text-tertiary); font-size: 12px; border-top: 1px solid var(--border); margin-top: 20px;">
+  &copy; <span id="copyrightYear"></span> UptoSkills. All rights reserved.
+</div>
+
+<script>
+  var yearSpan = document.getElementById('copyrightYear');
+  if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Intern Portal</title>
+  <style>
+    /* A slimmed-down version of the main CSS for the intern portal */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root, [data-theme="dark"] {
+      --bg:#0f172a; --bg-elevated:#111927; --card:#1e293b; --card-hover:#253047; --input-bg: #111927; --border:#2d3a50; --border-light:#3a4a62; --text-primary:#f1f5f9; --text-secondary:#94a3b8; --text-tertiary:#64748b; --accent:#1dc9ea; --accent-dim:#0ea5b9; --accent-light:#06b6d4; --accent-bg:#0a2d3a; --green:#22c55e; --green-light:#16a34a; --green-bg:#0a2d1a; --orange:#f59e0b; --orange-light:#d97706; --orange-bg:#2d2108; --red:#ef4444; --red-light:#dc2626; --red-bg:#2d0a0a; --purple:#c084fc; --purple-light:#a855f7; --purple-bg:#2a0a3a; --teal:#14b8a6; --teal-light:#0d9488; --teal-bg:#0a2d2a; --bg-card:var(--card); --card-bg:var(--card); --bg-hover:var(--card-hover); --radius-sm:6px; --radius:10px; --radius-lg:14px; --radius-xl:18px; --shadow-sm:0 1px 2px rgba(0,0,0,0.3); --shadow:0 4px 12px rgba(0,0,0,0.4); --shadow-lg:0 8px 30px rgba(0,0,0,0.5); --font:-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Segoe UI', sans-serif; --mono:'SF Mono', 'SFMono-Regular', 'JetBrains Mono', monospace; --transition:all 0.2s cubic-bezier(0.25,0.1,0.25,1);
+    }
+    [data-theme="light"] {
+      --bg:#f1f5f9; --bg-elevated:#ffffff; --card:#ffffff; --card-hover:#f8fafc; --input-bg: #f8fafc; --border:#e2e8f0; --border-light:#cbd5e1; --text-primary:#0f172a; --text-secondary:#475569; --text-tertiary:#94a3b8; --accent:#0891b2; --accent-dim:#0e7490; --accent-light:#06b6d4; --accent-bg:#ecfeff; --green:#16a34a; --green-light:#15803d; --green-bg:#ecfdf5; --orange:#d97706; --orange-light:#b45309; --orange-bg:#fffbeb; --red:#dc2626; --red-light:#b91c1c; --red-bg:#fef2f2; --purple:#9333ea; --purple-light:#7e22ce; --purple-bg:#faf5ff; --teal:#0d9488; --teal-light:#0f766e; --teal-bg:#f0fdfa; --shadow-sm:0 1px 2px rgba(15,23,42,0.06); --shadow:0 4px 14px rgba(15,23,42,0.10); --shadow-lg:0 10px 34px rgba(15,23,42,0.14);
+    }
+    body { font-family:var(--font); background:var(--bg); color:var(--text-primary); -webkit-font-smoothing:antialiased; min-height:100vh; }
+    .container { max-width:1000px; margin:0 auto; padding:20px; }
+    .card { background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow-sm); border:1px solid var(--border); margin-bottom:20px; }
+    .card-header { display:flex; justify-content:space-between; align-items:center; padding:14px 20px; border-bottom:1px solid var(--border); }
+    .card-title { font-size:16px; font-weight:600; }
+    .card-body { padding:20px; }
+    .btn { display:inline-flex; align-items:center; gap:6px; padding:10px 22px; border:none; border-radius:var(--radius); font-size:13px; font-weight:600; cursor:pointer; transition:var(--transition); font-family:var(--font); text-decoration:none; white-space:nowrap; user-select:none; }
+    .btn-accent { background:var(--accent); color:#0f172a; }
+    .btn-red { background:var(--red); color:#fff; }
+    .btn-blue { background:var(--accent); color:#0f172a; }
+    .btn-ghost { background:transparent; color:var(--text-secondary); border:1px solid var(--border); }
+    .btn:hover { transform:translateY(-1px); box-shadow:var(--shadow); }
+    .btn:active { transform:translateY(0); }
+    .form-group { margin-bottom:16px; }
+    .form-group label { display:block; font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:5px; text-transform:uppercase; }
+    input, textarea, select, input[type=password] { width:100%; padding:10px 14px; border:1.5px solid var(--border); border-radius:var(--radius-sm); font-size:14px; background:var(--bg-elevated); color:var(--text-primary); }
+    input:focus, textarea:focus, input[type=password]:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(29,201,234,0.15); }
+    input[readonly], textarea[readonly] { background:var(--bg); cursor:default; }
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1000; align-items:center; justify-content:center; padding:24px; backdrop-filter:blur(8px); }
+    .modal-overlay.open { display:flex; }
+    .modal { background:var(--card); border-radius:var(--radius-xl); padding:32px; max-width:480px; width:100%; box-shadow:var(--shadow-lg); max-height:90vh; overflow-y:auto; }
+    .modal h3 { font-size:18px; margin-bottom:8px; }
+    .modal p { font-size:14px; color:var(--text-secondary); margin-bottom:20px; }
+    .modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; padding-top:16px; border-top:1px solid var(--border-light); }
+    .spinner-overlay { display:none; position:fixed; inset:0; background:rgba(255,255,255,0.8); z-index:3000; align-items:center; justify-content:center; flex-direction:column; gap:16px; backdrop-filter:blur(4px); }
+    .spinner-overlay.active { display:flex; }
+    .spinner { width:36px; height:36px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin 0.65s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .spinner-text { font-size:14px; font-weight:600; color:var(--text-secondary); }
+    .toast-container { position:fixed; top:16px; right:16px; z-index:2000; display:flex; flex-direction:column; gap:8px; max-width:400px; }
+    .toast { padding:12px 18px; border-radius:var(--radius); box-shadow:var(--shadow-lg); font-size:13px; font-weight:500; display:flex; align-items:center; gap:10px; animation:slideIn 0.35s ease; }
+    .toast-green { background:var(--green-bg); color:var(--green); }
+    .toast-red { background:var(--red-bg); color:var(--red); }
+    @keyframes slideIn { from { transform:translateX(40px); opacity:0; } to { transform:translateX(0); opacity:1; } }
+    .dash-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+    .dash-title { font-size:20px; font-weight:700; }
+    .edit-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .edit-grid .full { grid-column:1/-1; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th, td { padding:10px 12px; border-bottom:1px solid var(--border); text-align:left; }
+    th { font-size:11px; text-transform:uppercase; color:var(--text-secondary); }
+    .status-pill { display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:50px; font-size:11px; font-weight:600; }
+    .pill-green { background:var(--green-bg); color:var(--green); }
+    .pill-orange { background:var(--orange-bg); color:var(--orange); }
+    .pill-red { background:var(--red-bg); color:var(--red); }
+    .same-check { display:flex; align-items:center; gap:10px; cursor:pointer; font-size:13px; padding:8px; border-radius:var(--radius-sm); }
+    .same-check input { display:none; }
+    .same-check .box { width:18px; height:18px; border-radius:5px; border:1.5px solid var(--border-light); display:flex; align-items:center; justify-content:center; }
+    .same-check.checked .box { background:var(--accent); border-color:var(--accent); }
+    .same-check .box svg { width:10px; height:10px; stroke:#0f172a; stroke-width:3; opacity:0; }
+    .same-check.checked .box svg { opacity:1; }
+    [data-theme="light"] .btn-accent { color:#fff; }
+    [data-theme="light"] .spinner-overlay { background:rgba(241,245,249,0.7); }
+    [data-theme="light"] .modal-overlay { background:rgba(15,23,42,0.35); }
+    [data-theme="light"] input, [data-theme="light"] select, [data-theme="light"] textarea, [data-theme="light"] input[type=password] { background:var(--bg-elevated); }
+
+    @media (max-width: 768px) {
+      .container { padding: 10px; }
+      .dash-header { 
+        flex-direction: column; 
+        align-items: stretch; 
+        gap: 10px; 
+        padding: 12px;
+      }
+      .dash-header > div:first-child {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .dash-header > div:first-child img {
+        height: 26px;
+      }
+      .dash-title {
+        font-size: 15px;
+      }
+      .dash-header p {
+        font-size: 11px;
+        margin: 0;
+      }
+      .dash-actions { 
+        width: 100%; 
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+      }
+      .dash-actions .btn { 
+        white-space: normal;
+        padding: 9px 8px;
+        font-size: 11px;
+        justify-content: center;
+        word-break: break-word;
+        min-height: 38px;
+      }
+      .dash-actions .btn-ghost {
+        grid-column: span 2;
+      }
+      .edit-grid { 
+        grid-template-columns: 1fr; 
+      }
+      .card-header { 
+        flex-direction: column; 
+        align-items: flex-start; 
+        gap: 10px; 
+      }
+      .card-body { 
+        padding: 14px; 
+      }
+      .modal { 
+        padding: 20px; 
+        margin: 16px; 
+      }
+      .form-group { 
+        margin-bottom: 12px; 
+      }
+    }
+
+    @media (max-width: 480px) {
+      .dash-actions {
+        grid-template-columns: 1fr;
+      }
+      .dash-actions .btn-ghost {
+        grid-column: span 1;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .table-wrap { 
+        overflow: visible; 
+        border: none; 
+        border-radius: 0; 
+        padding: 0;
+      }
+      .table-wrap table, .table-wrap thead, .table-wrap tbody, 
+      .table-wrap tr, .table-wrap th, .table-wrap td { 
+        display: block; 
+        width: 100%; 
+      }
+      .table-wrap thead { 
+        display: none; 
+      }
+      .table-wrap tbody tr { 
+        border: 1px solid var(--border-light); 
+        border-radius: var(--radius); 
+        margin-bottom: 14px; 
+        padding: 10px 14px; 
+        background: var(--card); 
+        box-shadow: var(--shadow-sm); 
+        position: relative; 
+      }
+      .table-wrap td { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        gap: 10px; 
+        padding: 8px 0; 
+        border-bottom: 1px dashed var(--border-light); 
+        text-align: right; 
+        white-space: normal !important; 
+        word-break: break-word; 
+      }
+      .table-wrap td:last-child { 
+        border-bottom: none; 
+      }
+      .table-wrap td[data-label]::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: var(--text-secondary);
+        text-align: left;
+        flex: 0 0 42%;
+        font-size: 11px;
+        text-transform: uppercase;
+      }
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+      .dash-actions .btn {
+        width: auto;
+        flex: 1 1 auto;
+      }
+      .edit-grid {
+        grid-template-columns: 1fr;
+      }
+      input, textarea, select, input[type=password] {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="spinnerOverlay" class="spinner-overlay">
+  <div class="spinner"></div>
+  <div class="spinner-text" id="spinnerText">Loading...</div>
+</div>
+<div id="toastContainer" class="toast-container"></div>
+
+<div id="internLoginView">
+  <div id="internLoginModal" class="modal-overlay open" style="position:relative; background:transparent;">
+    <div class="modal">
+      <div style="text-align: center; margin-bottom: 16px;">
+        <img src="logo.webp" alt="UptoSkills" style="height:40px;width:auto;filter:drop-shadow(0 2px 8px rgba(29,201,234,0.3));">
+      </div>
+      <h3>Intern Portal</h3>
+      <p>Use your registered email or Intern Code along with your password to log in.</p>
+      <div class="form-group" style="margin-bottom:4px"><label>User ID (Email or Intern Code)</label><input type="text" id="internLoginUserId" placeholder="Enter your email or Intern Code" onkeydown="if(event.key==='Enter')document.getElementById('internLoginPassword').focus()"></div>
+      <div class="form-group" style="margin-bottom:4px"><label>Password</label><input type="password" id="internLoginPassword" placeholder="Enter your password" onkeydown="if(event.key==='Enter')document.querySelector('#internLoginModal .btn-accent').click()"></div>
+      <div id="internLoginError" style="color:var(--red);font-size:13px;margin-top:8px;min-height:20px"></div>
+      <div class="modal-actions">
+        <button class="btn btn-accent" onclick="internLogin()">Login</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="internDashboardScreen" style="display:none">
+  <div class="container">
+    <div class="dash-header">
+      <div style="display:flex;align-items:center;gap:10px">
+        <img src="logo.webp" alt="UptoSkills" style="height:32px;width:auto;filter:drop-shadow(0 2px 6px rgba(29,201,234,0.25));">
+        <div>
+          <div class="dash-title" id="internNameLabel">Welcome, —</div>
+          <p style="color:var(--text-secondary); font-size:14px; margin:4px 0 0;">View your details and request changes if needed.</p>
+        </div>
+      </div>
+      <div class="dash-actions">
+        <button class="btn btn-ghost" style="border:none" onclick="toggleTheme()" id="themeBtn" title="Toggle light / dark mode">
+          <svg id="themeIcon" viewBox="0 0 24 24" style="width:14px;height:14px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle"></svg>
+          <span id="themeLabel">Light</span>
+        </button>
+        <button class="btn btn-accent" onclick="refreshInternDashboard()">↻ Refresh</button>
+        <button class="btn btn-accent" onclick="openChangeRequestModal()">Request a Change</button>
+        <button class="btn btn-blue" onclick="openInternChangePassword()">Change Password</button>
+        <button class="btn btn-red" onclick="internLogout()">Logout</button>
+      </div>
+    </div>
+    <div id="hrRemarksContainer"></div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Your Details</div></div>
+      <div class="card-body">
+        <div class="edit-grid" id="internDetailsGrid">
+          <p>Loading your details...</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" id="internRequestsCard" style="display:none;">
+      <div class="card-header"><div class="card-title">My Change Requests</div></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Submitted</th><th>Type</th><th>Details</th><th>Status</th><th>HR Remarks</th><th>Action</th></tr></thead>
+          <tbody id="internRequestsBody"></tbody>
+        </table>
+      </div>
+      <div id="internRequestsEmpty" style="padding:40px; text-align:center; color:var(--text-tertiary); display:none;">You have not submitted any change requests.</div>
+    </div>
+  </div>
+</div>
+
+<div id="changeRequestModal" class="modal-overlay">
+  <div class="modal">
+    <h3 id="changeRequestTitle">Request a Change</h3>
+    <p>Select the type of change and provide details. The HR team will review your request.</p>
+    <input type="hidden" id="changeRequestRowNum" value="0">
+    <div id="hrRemarksSection" style="display:none; margin-bottom:12px; padding:12px; background:var(--orange-bg); border:1px solid var(--orange); border-radius:var(--radius-sm);">
+      <div style="font-size:11px; font-weight:700; color:var(--orange); text-transform:uppercase; margin-bottom:4px;">HR Remarks</div>
+      <div id="hrRemarksText" style="font-size:13px; color:var(--text-secondary);"></div>
+    </div>
+    <div class="form-group">
+      <label>Request Type (select all that apply)</label>
+      <div id="requestTypeCheckboxes" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"></div>
+    </div>
+    <div id="extensionOptions" style="display:none; margin-bottom:16px;">
+        <div class="form-group">
+            <label>Select Extension Duration</label>
+            <select id="extensionDuration"></select>
+        </div>
+        <div style="font-size:12px; color:var(--orange); padding:10px; background:var(--orange-bg); border-radius:var(--radius-sm); border:1px solid var(--orange);">
+            <strong>Warning:</strong> Internship Extension is not applicable for leave/absent extension.
+        </div>
+    </div>
+    <div class="form-group">
+      <label id="requestDetailsLabel">Details</label>
+      <textarea id="requestDetails" rows="4" placeholder="Please provide specific details about the change you are requesting."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('changeRequestModal')">Cancel</button>
+      <button class="btn btn-accent" onclick="submitChangeRequest()">Submit Request</button>
+    </div>
+  </div>
+</div>
+
+<div id="internFirstTimeChangeModal" class="modal-overlay">
+  <div class="modal">
+    <h3>Set Your Password</h3>
+    <p>You are logging in for the first time. Please set a new password to secure your account.</p>
+    <input type="hidden" id="firstTimeUserId">
+    <input type="hidden" id="firstTimeOldPass">
+    <div id="firstTimeChangeError" style="color:var(--red);font-size:13px;margin-bottom:8px;min-height:20px"></div>
+    <div class="form-group">
+      <label>New Password</label>
+      <input type="password" id="firstTimeNewPass" placeholder="Min. 6 characters">
+    </div>
+    <div class="form-group">
+      <label>Confirm New Password</label>
+      <input type="password" id="firstTimeConfirmPass" placeholder="Re-enter your new password">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('internFirstTimeChangeModal')">Cancel</button>
+      <button class="btn btn-accent" onclick="submitFirstTimeChangePassword()">Set Password</button>
+    </div>
+  </div>
+</div>
+
+<div id="internChangePasswordModal" class="modal-overlay">
+  <div class="modal">
+    <h3>Change Password</h3>
+    <p>Update your account password.</p>
+    <input type="hidden" id="changePassUserId">
+    <div id="changePassError" style="color:var(--red);font-size:13px;margin-bottom:8px;min-height:20px"></div>
+    <div class="form-group">
+      <label>Current Password</label>
+      <input type="password" id="changePassOldPass">
+    </div>
+    <div class="form-group">
+      <label>New Password</label>
+      <input type="password" id="changePassNewPass" placeholder="Min. 6 characters">
+    </div>
+    <div class="form-group">
+      <label>Confirm New Password</label>
+      <input type="password" id="changePassConfirmPass">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('internChangePasswordModal')">Cancel</button>
+      <button class="btn btn-accent" onclick="submitInternChangePassword()">Update Password</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var BACKEND_URL = 'https://script.google.com/macros/s/AKfycbx6xKRBTlc85ZDWD2HumaIhetO9E4-c80EbC2srjzNYnsMPNyRAmKWYCXdccUF3VMi_/exec';
+  var API_TOKEN = null;
+
+  var API_MAP = {
+    getFrontendConfig: function() { return { action: 'getFrontendConfig' }; },
+    verifyInternLogin: function(a){ return { action: 'verifyInternLogin', userId: a[0], password: a[1] }; },
+    changeInternPassword: function(a){ return { action: 'changeInternPassword', userId: a[0], oldPassword: a[1], newPassword: a[2] }; },
+    fetchInternDetails: function(a){ return { action: 'fetchInternDetails', email: a[0] }; },
+    submitChangeRequest: function(a){ return { action: 'submitChangeRequest', email: a[0], requestType: a[1], details: a[2] }; },
+    updateChangeRequest: function(a){ return { action: 'updateChangeRequest', rowNum: a[0], requestType: a[1], details: a[2] }; },
+  };
+
+  function _gsExecute(fnName, args, successCb, failureCb) {
+    var spec = API_MAP[fnName];
+    if (!spec) { console.error('Unknown backend function: ' + fnName); if (failureCb) failureCb('Unknown backend function'); return; }
+    var mapped = spec(args || []);
+    mapped.__token = API_TOKEN;
+
+    if (!BACKEND_URL || BACKEND_URL.includes('YOUR_')) {
+        var msg = 'Backend URL is not configured in internlogin.html.';
+        console.error(msg); toast(msg, 'red'); if (failureCb) failureCb(msg); return;
+    }
+
+    fetch(BACKEND_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(mapped), mode: 'cors' })
+    .then(r => r.ok ? r.json() : Promise.reject('Network error: ' + r.statusText))
+    .then(d => { if (d && d.success === false) { if (failureCb) failureCb(d.error); else if (successCb) successCb(d); } else if (successCb) { successCb(d); } })
+    .catch(e => { console.error('Fetch Error:', e); if (failureCb) failureCb(e.message || String(e)); });
+  }
+
+  function makeGsRunProxy() {
+    var state = { success: null, failure: null };
+    var handler = {
+      get: function(t, prop) {
+        if (prop === 'withSuccessHandler') return function(fn){ state.success = fn; return proxy; };
+        if (prop === 'withFailureHandler') return function(fn){ state.failure = fn; return proxy; };
+        return function(){ _gsExecute(prop, Array.from(arguments), state.success, state.failure); return proxy; };
+      }
+    };
+    var proxy = new Proxy({}, handler);
+    return proxy;
+  }
+  var google = { script: { get run() { return makeGsRunProxy(); } } };
+
+  document.addEventListener('DOMContentLoaded', function() {
+    getApiToken();
+    initTheme();
+    document.getElementById('internLoginUserId').focus();
+  });
+
+  function getApiToken() {
+    google.script.run.withSuccessHandler(c => { if (c && c.token) API_TOKEN = c.token; }).getFrontendConfig();
+  }
+
+  var SUN_SVG = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="4.22" x2="19.78" y2="19.78"/>';
+  var MOON_SVG = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+
+  function initTheme() {
+    var theme = 'dark'; try { theme = localStorage.getItem('hr_portal_theme') || 'dark'; } catch(e){}
+    applyTheme(theme);
+  }
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    var iconHtml = theme === 'dark' ? SUN_SVG : MOON_SVG;
+    var label = theme === 'dark' ? 'Light' : 'Dark';
+    var i1 = document.getElementById('themeIcon'); if (i1) i1.innerHTML = iconHtml;
+    var l1 = document.getElementById('themeLabel'); if (l1) l1.textContent = label;
+  }
+  function toggleTheme() {
+    var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+    var next = cur === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try { localStorage.setItem('hr_portal_theme', next); } catch (e) {}
+  }
+
+  function showSpinner(t) { document.getElementById('spinnerText').textContent = t || 'Loading...'; document.getElementById('spinnerOverlay').classList.add('active'); }
+  function hideSpinner() { document.getElementById('spinnerOverlay').classList.remove('active'); }
+  function toast(msg, type) {
+    var c = document.getElementById('toastContainer');
+    if (!c) return;
+    var t = document.createElement('div');
+    t.className = 'toast toast-' + (type || 'red');
+    var iconSvg = (type === 'green') ? '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>' : '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    t.innerHTML = '<span class="toast-icon" style="background:'+type+'">'+iconSvg+'</span> ' + msg;
+    c.appendChild(t);
+    setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(40px)'; t.style.transition = 'all 0.3s'; setTimeout(() => t.remove(), 300); }, 3500);
+  }
+
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+  function openModal(id) { document.getElementById(id).classList.add('open'); }
+  function esc(s) { return (s || '').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function fmtDate(v) { if (!v) return ''; var d = new Date(v); return isNaN(d.getTime()) ? v : d.toLocaleDateString('en-GB'); }
+
+  function internLogin() {
+    var userId = document.getElementById('internLoginUserId').value.trim();
+    var password = document.getElementById('internLoginPassword').value;
+    var errEl = document.getElementById('internLoginError');
+    if (!userId || !password) { if (errEl) errEl.textContent = 'Please enter both User ID and Password.'; return; }
+    showSpinner('Verifying...');
+    google.script.run
+      .withSuccessHandler(r => {
+        hideSpinner();
+        if (r && r.success) {
+          if (r.needsPasswordChange) {
+            closeModal('internLoginModal');
+            toast('Welcome, ' + r.name + '! Please set your password.', 'green');
+            var dash = document.getElementById('internDashboardScreen');
+            dash.dataset.email = r.email || userId;
+            dash.dataset.name = r.name || 'Intern';
+            openModal('internFirstTimeChangeModal');
+            document.getElementById('firstTimeUserId').value = userId;
+            document.getElementById('firstTimeOldPass').value = password;
+            document.getElementById('firstTimeNewPass').value = '';
+            document.getElementById('firstTimeConfirmPass').value = '';
+            document.getElementById('firstTimeChangeError').textContent = '';
+            return;
+          }
+          closeModal('internLoginModal');
+          toast('Welcome, ' + r.name + '!', 'green');
+          showInternDashboard(r.email, r.name);
+        } else {
+          toast((r && r.error) || 'Invalid credentials.', 'red');
+        }
+      })
+      .withFailureHandler(e => { hideSpinner(); toast('Login error: ' + e, 'red'); })
+      .verifyInternLogin(userId, password);
+  }
+
+  function showInternDashboard(email, name) {
+    document.getElementById('internLoginView').style.display = 'none';
+    document.getElementById('internDashboardScreen').style.display = 'block';
+    document.getElementById('internNameLabel').textContent = 'Welcome, ' + (name || 'Intern');
+    document.getElementById('internDashboardScreen').dataset.email = email || '';
+    document.getElementById('internDashboardScreen').dataset.name = name || 'Intern';
+
+    showSpinner('Loading your details...');
+    google.script.run
+      .withSuccessHandler(r => {
+        hideSpinner();
+        if (r && r.success) {
+          renderInternDetails(r.details);
+          renderInternChangeRequests(r.details.changeRequests);
+          var remarksContainer = document.getElementById('hrRemarksContainer');
+          remarksContainer.innerHTML = '';
+          if (r.details.remarks && r.details.remarks.length > 0) {
+            var remarksHtml = r.details.remarks.map(rem => `<div class="card" style="border-color:var(--orange);"><div class="card-header" style="background:var(--orange-bg);"><div class="card-title" style="color:var(--orange);">Action Required</div></div><div class="card-body"><b>HR Remarks:</b> ${esc(rem)}</div></div>`).join('');
+            remarksContainer.innerHTML = remarksHtml;
+          }
+        } else {
+          toast((r && r.error) || 'Failed to fetch details.', 'red');
+        }
+      })
+      .withFailureHandler(e => { hideSpinner(); toast('Error fetching details: ' + e, 'red'); })
+      .fetchInternDetails(email);
+  }
+
+  function refreshInternDashboard() {
+    var dash = document.getElementById('internDashboardScreen');
+    var email = dash.dataset.email;
+    var name = dash.dataset.name;
+    if (email) showInternDashboard(email, name);
+  }
+
+  function renderInternDetails(details) {
+    var grid = document.getElementById('internDetailsGrid');
+    var h = '';
+    var keysToShow = ['Intern Code', 'Onboarding Date', 'Name', 'Email ID', 'Mobile No.', 'Whatsapp No.', 'Current/Last College Name', 'Current/Last College Degree Name (Eg. BCA,BBA,BTECH)', 'Current/Last College Branch Name (Eg. CSE,ECE,AIML)', 'Current/Last College Enrollment No.', 'Domain Name', 'Start Date', 'End Date', 'Current Address', 'Permanent Address', 'Assigned Group Name', 'Current Status'];
+    keysToShow.forEach(key => {
+      var value = details[key] || '—';
+      var fullClass = (key.includes('Address') || key.includes('College')) ? ' full' : '';
+      h += `<div class="form-group${fullClass}"><label>${esc(key)}</label><input type="text" value="${esc(value)}" readonly></div>`;
+    });
+    grid.innerHTML = h;
+  }
+
+  function renderInternChangeRequests(requests) {
+    var card = document.getElementById('internRequestsCard'), body = document.getElementById('internRequestsBody'), empty = document.getElementById('internRequestsEmpty');
+    if (!requests || requests.length === 0) { card.style.display = 'block'; body.innerHTML = ''; empty.style.display = 'block'; return; }
+    card.style.display = 'block'; empty.style.display = 'none';
+    var h = '';
+    requests.forEach(req => {
+      var status = req[5] || 'Pending', statusClass = status.toLowerCase() === 'resolved' ? 'pill-green' : status.toLowerCase() === 'need action' ? 'pill-red' : 'pill-orange';
+      var actionCell = status.toLowerCase() === 'need action' ? `<button class="btn btn-accent" style="padding:4px 10px; font-size:12px;" onclick='editChangeRequest(${JSON.stringify(req)})'>Edit</button>` : '';
+      h += `<tr><td data-label="Submitted">${esc(fmtDate(req[0]))}</td><td data-label="Type">${esc(req[3])}</td><td data-label="Details" style="white-space:normal">${esc(req[4])}</td><td data-label="Status"><span class="status-pill ${statusClass}">${esc(status)}</span></td><td data-label="HR Remarks" style="white-space:normal">${esc(req[6] || '—')}</td><td data-label="Action">${actionCell}</td></tr>`;
+    });
+    body.innerHTML = h;
+  }
+
+  function internLogout() {
+    document.getElementById('internDashboardScreen').style.display = 'none';
+    document.getElementById('internLoginView').style.display = 'block';
+    document.getElementById('internLoginUserId').value = '';
+    document.getElementById('internLoginPassword').value = '';
+    document.getElementById('internLoginError').textContent = '';
+    openModal('internLoginModal');
+    toast('You have been logged out.', 'orange');
+  }
+
+  function openChangeRequestModal() {
+    var email = document.getElementById('internDashboardScreen').dataset.email;
+    if (!email) { toast('Session error. Please log in again.', 'red'); return; }
+    var container = document.getElementById('requestTypeCheckboxes');
+    var types = ['Name', 'Email ID', 'Mobile No.', 'Whatsapp No.', 'Current Address', 'Permanent Address', 'College Name', 'Degree Name', 'Branch Name', 'Enrollment No.', 'Internship Extension', 'Other'];
+    container.innerHTML = types.map(type => `<label class="same-check" for="reqType_${type.replace(/\s+/g, '')}"><input type="checkbox" id="reqType_${type.replace(/\s+/g, '')}" value="${type}"><span class="box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span>${type}</span></label>`).join('');
+    document.getElementById('requestDetails').value = '';
+    document.getElementById('changeRequestRowNum').value = '0';
+    document.getElementById('changeRequestTitle').textContent = 'Request a Change';
+    document.getElementById('hrRemarksSection').style.display = 'none';
+    document.getElementById('extensionOptions').style.display = 'none';
+
+    var durationSelect = document.getElementById('extensionDuration');
+    durationSelect.innerHTML = '';
+    for (var i = 1; i <= 12; i++) {
+        var opt = document.createElement('option');
+        opt.value = i + ' Month' + (i > 1 ? 's' : '');
+        opt.textContent = i + ' Month' + (i > 1 ? 's' : '');
+        durationSelect.appendChild(opt);
+    }
+
+    openModal('changeRequestModal');
+    container.querySelectorAll('.same-check').forEach(label => {
+      label.addEventListener('click', e => {
+        e.preventDefault();
+        var chk = label.querySelector('input');
+        chk.checked = !chk.checked;
+        label.classList.toggle('checked', chk.checked);
+
+        if (chk.value === 'Internship Extension') {
+            document.getElementById('extensionOptions').style.display = chk.checked ? 'block' : 'none';
+        }
+        var detailsLabel = document.getElementById('requestDetailsLabel');
+        var isExtensionOnly = chk.value === 'Internship Extension' && chk.checked && container.querySelectorAll('input:checked').length === 1;
+        detailsLabel.innerHTML = isExtensionOnly ? 'Details / Reason (Optional)' : 'Details / Reason <span class="req">*</span>';
+      });
+    });
+  }
+
+  function submitChangeRequest() {
+    var rowNum = document.getElementById('changeRequestRowNum').value;
+    var email = document.getElementById('internDashboardScreen').dataset.email;
+    if (!email) { toast('Session error. Please log in again.', 'red'); return; }
+    var selectedTypes = Array.from(document.querySelectorAll('#requestTypeCheckboxes input:checked')).map(chk => chk.value);
+    var details = document.getElementById('requestDetails').value.trim();
+    var isExtensionRequest = selectedTypes.includes('Internship Extension');
+
+    if (selectedTypes.length === 0) {
+        toast('Please select at least one request type.', 'red');
+        return;
+    }
+
+    if (details === '' && !(isExtensionRequest && selectedTypes.length === 1)) {
+        toast('Please provide details for your change request.', 'red');
+        return;
+    }
+
+    var action = (rowNum && rowNum !== '0') ? 'updateChangeRequest' : 'submitChangeRequest';
+    var finalDetails = isExtensionRequest ? `Extension Request: ${document.getElementById('extensionDuration').value}. ` + details : details;
+    var args = (rowNum && rowNum !== '0') ? [Number(rowNum), selectedTypes, finalDetails] : [email, selectedTypes, finalDetails];
+    showSpinner('Submitting request...');
+    google.script.run
+      .withSuccessHandler(r => {
+        hideSpinner();
+        if (r && r.success) {
+          closeModal('changeRequestModal');
+          toast(r.message, 'green');
+          showInternDashboard(email);
+        } else {
+          toast((r && r.error) || 'Submission failed.', 'red');
+        }
+      })
+      .withFailureHandler(e => { hideSpinner(); toast('Error: ' + e, 'red'); })
+      [action].apply(null, args);
+  }
+
+  function editChangeRequest(requestData) {
+    var rowNum = requestData[7], types = (requestData[3] || '').split(',').map(t => t.trim()), details = requestData[4] || '', hrRemarks = requestData[6] || '';
+    openChangeRequestModal();
+    document.getElementById('changeRequestRowNum').value = rowNum;
+    document.getElementById('changeRequestTitle').textContent = 'Edit Your Change Request';
+    
+    if (types.includes('Internship Extension')) {
+        document.getElementById('extensionOptions').style.display = 'block';
+        var durationMatch = details.match(/Extension Request: (.*?)\./);
+        if (durationMatch) document.getElementById('extensionDuration').value = durationMatch[1];
+        document.getElementById('requestDetails').value = details.replace(/Extension Request: (.*?)\. /, '');
+    } else {
+        document.getElementById('requestDetails').value = details;
+    }
+
+    document.querySelectorAll('#requestTypeCheckboxes input').forEach(chk => {
+      if (types.includes(chk.value)) { chk.checked = true; chk.closest('.same-check').classList.add('checked'); }
+    });
+    document.getElementById('hrRemarksText').textContent = hrRemarks;
+    document.getElementById('hrRemarksSection').style.display = 'block';
+  }
+
+  function submitFirstTimeChangePassword() {
+    var userId = document.getElementById('firstTimeUserId').value;
+    var oldPass = document.getElementById('firstTimeOldPass').value;
+    var newPass = document.getElementById('firstTimeNewPass').value;
+    var confirmPass = document.getElementById('firstTimeConfirmPass').value;
+    var errEl = document.getElementById('firstTimeChangeError');
+    if (!newPass || newPass.length < 6) { if (errEl) errEl.textContent = 'New password must be at least 6 characters.'; return; }
+    if (newPass !== confirmPass) { if (errEl) errEl.textContent = 'Passwords do not match.'; return; }
+    errEl.textContent = '';
+    showSpinner('Setting password...');
+    google.script.run
+      .withSuccessHandler(r => {
+        hideSpinner();
+        if (r && r.success) {
+          closeModal('internFirstTimeChangeModal');
+          toast(r.message, 'green');
+          var dash = document.getElementById('internDashboardScreen');
+          var emailToUse = r.email || userId;
+          var nameToUse = dash.dataset.name || document.getElementById('internNameLabel').textContent.replace('Welcome, ', '') || 'Intern';
+          showInternDashboard(emailToUse, nameToUse);
+        } else {
+          if (errEl) errEl.textContent = (r && r.error) || 'Failed to set password.';
+        }
+      })
+      .withFailureHandler(e => { hideSpinner(); if (errEl) errEl.textContent = 'Error: ' + e; })
+      .changeInternPassword(userId, oldPass, newPass);
+  }
+
+  function openInternChangePassword() {
+    var email = document.getElementById('internDashboardScreen').dataset.email;
+    if (!email) { toast('Session error. Please log in again.', 'red'); return; }
+    document.getElementById('changePassUserId').value = email;
+    document.getElementById('changePassOldPass').value = '';
+    document.getElementById('changePassNewPass').value = '';
+    document.getElementById('changePassConfirmPass').value = '';
+    document.getElementById('changePassError').textContent = '';
+    openModal('internChangePasswordModal');
+  }
+
+  function submitInternChangePassword() {
+    var userId = document.getElementById('changePassUserId').value;
+    var oldPass = document.getElementById('changePassOldPass').value;
+    var newPass = document.getElementById('changePassNewPass').value;
+    var confirmPass = document.getElementById('changePassConfirmPass').value;
+    var errEl = document.getElementById('changePassError');
+    if (!oldPass || !newPass || newPass.length < 6) { if (errEl) errEl.textContent = 'Please fill all fields correctly. New password must be at least 6 characters.'; return; }
+    if (newPass !== confirmPass) { if (errEl) errEl.textContent = 'New passwords do not match.'; return; }
+    errEl.textContent = '';
+    showSpinner('Changing password...');
+    google.script.run
+      .withSuccessHandler(r => {
+        hideSpinner();
+        if (r && r.success) {
+          closeModal('internChangePasswordModal');
+          toast(r.message, 'green');
+        } else {
+          if (errEl) errEl.textContent = (r && r.error) || 'Failed to change password.';
+        }
+      })
+      .withFailureHandler(e => { hideSpinner(); if (errEl) errEl.textContent = 'Error: ' + e; })
+      .changeInternPassword(userId, oldPass, newPass);
+  }
+</script>
+
+<div style="text-align:center; padding: 16px 20px; color: var(--text-tertiary); font-size: 12px; border-top: 1px solid var(--border); margin-top: 20px;">
+  &copy; <span id="copyrightYear"></span> UptoSkills. All rights reserved.
+</div>
+
+<script>
+  var yearSpan = document.getElementById('copyrightYear');
+  if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+</script>
+
+</body>
+</html>

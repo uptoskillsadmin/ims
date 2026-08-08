@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Intern Onboarding Portal</title>
+  <style>
+    /* All CSS from index.html is copied here */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root, [data-theme="dark"] {
+      --bg:#0f172a;
+      --bg-elevated:#111927;
+      --card:#1e293b;
+      --card-hover:#253047;
+      --input-bg: #111927;
+      --border:#2d3a50;
+      --border-light:#3a4a62;
+      --text-primary:#f1f5f9;
+      --text-secondary:#94a3b8;
+      --text-tertiary:#64748b;
+      --accent:#1dc9ea;
+      --accent-dim:#0ea5b9;
+      --accent-light:#06b6d4;
+      --accent-bg:#0a2d3a;
+      --green:#22c55e;
+      --green-light:#16a34a;
+      --green-bg:#0a2d1a;
+      --orange:#f59e0b;
+      --orange-light:#d97706;
+      --orange-bg:#2d2108;
+      --red:#ef4444;
+      --red-light:#dc2626;
+      --red-bg:#2d0a0a;
+      --purple:#c084fc;
+      --purple-light:#a855f7;
+      --purple-bg:#2a0a3a;
+      --teal:#14b8a6;
+      --teal-light:#0d9488;
+      --teal-bg:#0a2d2a;
+      --bg-card:var(--card);
+      --card-bg:var(--card);
+      --bg-hover:var(--card-hover);
+      --radius-sm:6px;
+      --radius:10px;
+      --radius-lg:14px;
+      --radius-xl:18px;
+      --shadow-sm:0 1px 2px rgba(0,0,0,0.3);
+      --shadow:0 4px 12px rgba(0,0,0,0.4);
+      --shadow-lg:0 8px 30px rgba(0,0,0,0.5);
+      --font:-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Segoe UI', sans-serif;
+      --mono:'SF Mono', 'SFMono-Regular', 'JetBrains Mono', monospace;
+      --transition:all 0.2s cubic-bezier(0.25,0.1,0.25,1);
+    }
+
+    [data-theme="light"] {
+      --bg:#f1f5f9;
+      --bg-elevated:#ffffff;
+      --card:#ffffff;
+      --card-hover:#f8fafc;
+      --input-bg: #f8fafc;
+      --border:#e2e8f0;
+      --border-light:#cbd5e1;
+      --text-primary:#0f172a;
+      --text-secondary:#475569;
+      --text-tertiary:#94a3b8;
+      --accent:#0891b2;
+      --accent-dim:#0e7490;
+      --accent-light:#06b6d4;
+      --accent-bg:#ecfeff;
+      --green:#16a34a;
+      --green-light:#15803d;
+      --green-bg:#ecfdf5;
+      --orange:#d97706;
+      --orange-light:#b45309;
+      --orange-bg:#fffbeb;
+      --red:#dc2626;
+      --red-light:#b91c1c;
+      --red-bg:#fef2f2;
+      --purple:#9333ea;
+      --purple-light:#7e22ce;
+      --purple-bg:#faf5ff;
+      --teal:#0d9488;
+      --teal-light:#0f766e;
+      --teal-bg:#f0fdfa;
+      --shadow-sm:0 1px 2px rgba(15,23,42,0.06);
+      --shadow:0 4px 14px rgba(15,23,42,0.10);
+      --shadow-lg:0 10px 34px rgba(15,23,42,0.14);
+    }
+    body { font-family:var(--font); background:var(--bg); color:var(--text-primary); -webkit-font-smoothing:antialiased; min-height:100vh; }
+    .container { max-width:1400px; margin:0 auto; padding:20px; }
+    @media (max-width:768px) { .container { padding:12px; } }
+
+    .hero {
+      background:linear-gradient(135deg,#0f172a 0%,#111927 50%,#0c1b33 100%);
+      border:1px solid var(--border);
+      border-radius:var(--radius-xl); padding:48px 40px; margin-bottom:28px;
+      color:var(--text-primary); position:relative; overflow:hidden;
+    }
+    .hero::before { content:''; position:absolute; top:-60%; right:-15%; width:500px; height:500px; background:radial-gradient(circle,rgba(29,201,234,0.08) 0%,transparent 70%); border-radius:50%; }
+    .hero::after { content:''; position:absolute; bottom:-40%; left:-10%; width:400px; height:400px; background:radial-gradient(circle,rgba(29,201,234,0.05) 0%,transparent 70%); border-radius:50%; }
+    .hero-content { position:relative; z-index:1; display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:20px; }
+    .hero-left { flex:1; min-width:300px; }
+    .hero-right { display:flex; align-items:flex-start; }
+    .hero-badge { display:inline-flex; align-items:center; gap:8px; background:var(--accent-bg); border:1px solid var(--accent); padding:6px 16px; border-radius:50px; font-size:12px; font-weight:600; letter-spacing:0.5px; color:var(--accent); margin-bottom:14px; }
+    .hero-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--accent); flex-shrink:0; animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+    .hero h1 { font-size:32px; font-weight:700; letter-spacing:-0.5px; margin-bottom:8px; background:linear-gradient(135deg,var(--text-primary) 0%,var(--accent) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .hero p { font-size:15px; color:var(--text-secondary); max-width:600px; line-height:1.5; margin-bottom:20px; }
+    .btn-hero {
+      display:inline-flex; align-items:center; gap:8px; padding:10px 22px; border-radius:50px;
+      background:var(--card); color:var(--text-primary); border:1px solid var(--border);
+      font-size:13px; font-weight:600; cursor:pointer; transition:var(--transition);
+      font-family:var(--font);
+    }
+    .btn-hero:hover { background:var(--card-hover); border-color:var(--accent); color:var(--accent); transform:translateY(-1px); }
+
+    .card { background:var(--card); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); border:1px solid var(--border); margin-bottom:20px; transition:var(--transition); }
+    .card:hover { box-shadow:var(--shadow); border-color:var(--border-light); }
+    .card-header { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; border-bottom:1px solid var(--border); flex-wrap:wrap; gap:10px; }
+    .card-title { font-size:16px; font-weight:600; color:var(--text-primary); display:flex; align-items:center; gap:8px; }
+    .card-body { padding:20px 24px; }
+
+    .btn {
+      display:inline-flex; align-items:center; gap:6px; padding:10px 22px; border:none;
+      border-radius:var(--radius); font-size:13px; font-weight:600; cursor:pointer;
+      transition:var(--transition); font-family:var(--font); text-decoration:none;
+      white-space:nowrap; user-select:none;
+    }
+    .btn:hover { transform:translateY(-1px); box-shadow:var(--shadow); }
+    .btn:active { transform:translateY(0); }
+    .btn-accent { background:var(--accent); color:#0f172a; }
+    .btn-accent:hover { background:var(--accent-light); }
+    .btn-ghost { background:transparent; color:var(--text-secondary); border:1px solid var(--border); }
+    .btn-ghost:hover { background:var(--bg-elevated); border-color:var(--accent); color:var(--accent); }
+
+    .form-group { margin-bottom:16px; flex:1; min-width:220px; }
+    .form-group label { display:block; font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:5px; letter-spacing:0.3px; text-transform:uppercase; }
+    .req { color:var(--red); }
+    .form-row { display:flex; gap:16px; flex-wrap:wrap; }
+
+    select, textarea,
+    input[type=text], input[type=email], input[type=url], input[type=number], input[type=search], input[type=password],
+    input[type=tel], input[type=date] {
+      width:100%; padding:10px 14px; border:1.5px solid var(--border); border-radius:var(--radius-sm);
+      font-size:14px; font-family:var(--font); transition:var(--transition); background:var(--input-bg);
+      color:var(--text-primary); appearance:none;
+    }
+    input:focus, select:focus, textarea:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(29,201,234,0.15); }
+    input.error, select.error { border-color:var(--red); box-shadow:0 0 0 3px rgba(239,68,68,0.1); }
+    input[readonly] { background:var(--bg); cursor:default; }
+    input[type=date] { color-scheme:light dark; }
+
+    .field-error { font-size:12px; color:var(--red); margin-top:4px; display:none; align-items:center; gap:4px; }
+    .field-error.show { display:flex; }
+
+    .step-group { border:1px solid var(--border); border-radius:var(--radius); margin-bottom:12px; overflow:hidden; }
+    .step-header { display:flex; align-items:center; gap:12px; padding:14px 18px; cursor:pointer; background:var(--bg-elevated); user-select:none; transition:var(--transition); }
+    .step-header:hover { background:var(--card-hover); }
+    .step-num { width:26px; height:26px; border-radius:50%; background:var(--accent); color:#0f172a; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+    .step-label { font-size:14px; font-weight:600; color:var(--text-primary); flex:1; }
+    .step-arrow { width:8px; height:8px; border-right:2px solid var(--text-tertiary); border-bottom:2px solid var(--text-tertiary); transform:rotate(45deg); transition:transform 0.25s; flex-shrink:0; }
+    .step-arrow.open { transform:rotate(-135deg); }
+    .step-body { padding:0 18px; max-height:0; overflow:hidden; transition:max-height 0.3s ease, padding 0.3s ease; }
+    .step-body.open { max-height:4000px; padding:18px; }
+    .step-nav { display:flex; gap:12px; justify-content:flex-end; margin-top:18px; padding-top:14px; border-top:1px dashed var(--border); }
+    .step-nav .btn { flex:0 0 auto; }
+
+    .upload-zone { border:2px dashed var(--border); border-radius:var(--radius); padding:28px; text-align:center; cursor:pointer; transition:var(--transition); background:var(--bg-elevated); }
+    .upload-zone:hover, .upload-zone.dragover { border-color:var(--accent); background:var(--accent-bg); }
+    .upload-zone.has-file { border-color:var(--green); background:var(--green-bg); }
+    .upload-label { font-size:14px; font-weight:600; color:var(--text-secondary); }
+    .upload-sub { font-size:12px; color:var(--text-tertiary); margin-top:4px; }
+    .file-name { font-size:13px; color:var(--green); margin-top:6px; font-weight:500; }
+    .upload-icon-wrap { width:40px; height:40px; border-radius:50%; background:var(--accent-bg); display:flex; align-items:center; justify-content:center; margin:0 auto 10px; }
+    .upload-icon-wrap svg { width:20px; height:20px; fill:var(--accent); }
+
+    .toast-container { position:fixed; top:16px; right:16px; z-index:2000; display:flex; flex-direction:column; gap:8px; max-width:400px; }
+    .toast { padding:12px 18px; border-radius:var(--radius); box-shadow:var(--shadow-lg); font-size:13px; font-weight:500; display:flex; align-items:center; gap:10px; animation:slideIn 0.35s ease; }
+    .toast-accent { background:var(--accent-bg); color:var(--accent); border-color:var(--accent); }
+    .toast-green { background:var(--green-bg); color:var(--green); border-color:var(--green); }
+    .toast-red { background:var(--red-bg); color:var(--red); border-color:var(--red); }
+    .toast-orange { background:var(--orange-bg); color:var(--orange); border-color:var(--orange); }
+    .toast-icon { width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .toast-icon svg { width:12px; height:12px; fill:#fff; }
+    @keyframes slideIn { from { transform:translateX(40px); opacity:0; } to { transform:translateX(0); opacity:1; } }
+
+    .spinner-overlay { display:none; position:fixed; inset:0; background:rgba(255,255,255,0.8); z-index:3000; align-items:center; justify-content:center; flex-direction:column; gap:16px; backdrop-filter:blur(4px); }
+    .spinner-overlay.active { display:flex; }
+    .spinner { width:36px; height:36px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin 0.65s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .spinner-text { font-size:14px; font-weight:600; color:var(--text-secondary); }
+
+    .result-section { display:none; margin-top:28px; animation:fadeSlideUp 0.5s ease; }
+    .result-section.show { display:block; }
+    @keyframes fadeSlideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    .result-hero { text-align:center; padding:36px 24px; }
+    .result-icon-wrap { width:88px; height:88px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; animation:scaleBounce 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+    .result-icon-wrap.success { background:var(--green-bg); border:1px solid var(--green); }
+    .result-icon-wrap.fail { background:var(--red-bg); border:1px solid var(--red); }
+    @keyframes scaleBounce { 0% { transform:scale(0); } 60% { transform:scale(1.15); } 100% { transform:scale(1); } }
+    .result-icon-wrap svg { width:40px; height:40px; }
+    .result-icon-wrap svg .check-circle { fill:none; stroke:var(--green); stroke-width:6; stroke-dasharray:340; stroke-dashoffset:340; animation:drawCircle 0.6s ease forwards; }
+    .result-icon-wrap svg .check-path { fill:none; stroke:var(--green); stroke-width:6; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:80; stroke-dashoffset:80; animation:drawTick 0.4s ease 0.45s forwards; }
+    .result-icon-wrap svg .x-circle { fill:none; stroke:var(--red); stroke-width:6; stroke-dasharray:340; stroke-dashoffset:340; animation:drawCircle 0.6s ease forwards; }
+    .result-icon-wrap svg .x-path { fill:none; stroke:var(--red); stroke-width:6; stroke-linecap:round; stroke-dasharray:56; stroke-dashoffset:56; animation:drawTick 0.35s ease 0.5s forwards; }
+    .result-icon-wrap svg .x-path-2 { fill:none; stroke:var(--red); stroke-width:6; stroke-linecap:round; stroke-dasharray:56; stroke-dashoffset:56; animation:drawTick 0.35s ease 0.6s forwards; }
+    @keyframes drawCircle { to { stroke-dashoffset:0; } }
+    @keyframes drawTick { to { stroke-dashoffset:0; } }
+    .result-title { font-size:22px; font-weight:700; color:var(--text-primary); margin-bottom:4px; }
+    .result-subtitle { font-size:14px; color:var(--text-secondary); margin-bottom:12px; }
+    .result-code { font-size:32px; font-weight:800; letter-spacing:1px; font-family:var(--mono); background:linear-gradient(135deg,var(--accent),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; padding:12px 0; }
+    .result-fail-reason { background:var(--red-bg); border:1px solid rgba(239,68,68,0.2); border-radius:var(--radius); padding:16px 20px; margin:12px 0; text-align:left; }
+    .result-fail-reason .fail-label { font-size:11px; font-weight:600; color:var(--red); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
+    .result-fail-reason .fail-text { font-size:14px; color:var(--text-primary); line-height:1.4; }
+    .result-detail-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; background:var(--bg); border-radius:var(--radius); padding:20px; margin-top:16px; }
+    .result-detail-item { padding:6px 0; }
+    .result-detail-label { font-size:11px; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:2px; }
+    .result-detail-value { font-size:14px; color:var(--text-primary); font-weight:500; }
+    .result-actions { display:flex; gap:12px; margin-top:20px; flex-wrap:wrap; }
+    .result-actions .btn { flex:1; justify-content:center; min-width:140px; }
+
+    .card { transition:transform 0.25s cubic-bezier(0.25,0.1,0.25,1), box-shadow 0.25s ease; }
+    .card:hover { transform:translateY(-2px); }
+    input:focus, select:focus, textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(29,201,234,0.15), 0 1px 2px rgba(0,0,0,0.05); }
+    select { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2386868b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:32px; }
+    .hero::before { animation:floatBlob 8s ease-in-out infinite; }
+    .hero::after { animation:floatBlob 10s ease-in-out infinite reverse; }
+    @keyframes floatBlob { 0%,100% { transform:translate(0,0) scale(1); } 33% { transform:translate(30px,-30px) scale(1.1); } 66% { transform:translate(-20px,20px) scale(0.9); } }
+    .btn { position:relative; overflow:hidden; }
+    .btn::after { content:''; position:absolute; inset:0; background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,0.12) 50%,transparent 70%); transform:translateX(-100%); transition:transform 0.6s; }
+    .btn:hover::after { transform:translateX(100%); }
+    .upload-zone { transition:all 0.3s cubic-bezier(0.25,0.1,0.25,1); }
+    .upload-zone:hover { transform:scale(1.01); }
+    .step-header { transition:background 0.2s, transform 0.2s; }
+    .step-header:hover { transform:translateX(2px); }
+
+    [data-theme="light"] .hero { background:linear-gradient(135deg,#ffffff 0%,#f0fdfa 50%,#e0f2fe 100%); border-color:var(--border); }
+    [data-theme="light"] .hero::before { background:radial-gradient(circle,rgba(8,145,178,0.10) 0%,transparent 70%); }
+    [data-theme="light"] .hero::after { background:radial-gradient(circle,rgba(8,145,178,0.07) 0%,transparent 70%); }
+    [data-theme="light"] .spinner-overlay { background:rgba(241,245,249,0.7); }
+    [data-theme="light"] .btn-accent { color:#fff; }
+    [data-theme="light"] input, [data-theme="light"] select, [data-theme="light"] textarea { background:var(--bg-elevated); }
+    [data-theme="light"] input[readonly] { background:var(--bg); }
+
+    .same-check {
+      display:flex; align-items:center; gap:10px; cursor:pointer; font-size:13px; font-weight:500;
+      color:var(--text-primary); user-select:none; padding:10px 14px; border:1.5px solid var(--border);
+      border-radius:var(--radius-sm); background:var(--input-bg); transition:var(--transition); width:100%;
+    }
+    .same-check:hover { border-color:var(--accent); }
+    .same-check input { position:absolute; opacity:0; width:0; height:0; }
+    .same-check .box {
+      width:20px; height:20px; border-radius:6px; border:2px solid var(--border-light); flex-shrink:0;
+      display:flex; align-items:center; justify-content:center; background:var(--card); transition:var(--transition);
+    }
+    .same-check .box svg { width:12px; height:12px; fill:none; stroke:#fff; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:22; stroke-dashoffset:22; transition:stroke-dashoffset 0.25s ease; }
+    .same-check.checked { border-color:var(--accent); background:var(--accent-bg); color:var(--accent); }
+    .same-check.checked .box { background:var(--accent); border-color:var(--accent); }
+    .same-check.checked .box svg { stroke-dashoffset:0; }
+
+    .form-progress { padding:14px 24px 6px; }
+    .progress-track { height:6px; border-radius:50px; background:var(--border); overflow:hidden; }
+    .progress-fill { height:100%; width:0%; border-radius:50px; background:linear-gradient(90deg,var(--accent),var(--purple)); transition:width 0.45s cubic-bezier(0.2,0.8,0.2,1); }
+
+    .field-shake { animation:shake 0.4s; }
+    @keyframes shake { 0%,100%{transform:translateX(0);} 20%{transform:translateX(-6px);} 40%{transform:translateX(6px);} 60%{transform:translateX(-4px);} 80%{transform:translateX(4px);} }
+
+    .btn.loading { color:transparent !important; pointer-events:none; position:relative; }
+    .btn.loading::before { content:''; position:absolute; left:50%; top:50%; width:16px; height:16px; margin:-8px 0 0 -8px; border:2px solid rgba(255,255,255,0.45); border-top-color:#fff; border-radius:50%; animation:spin 0.6s linear infinite; }
+
+    .card-enter { animation:cardEnter 0.5s cubic-bezier(0.2,0.8,0.2,1) both; }
+    @keyframes cardEnter { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+
+    .toast { box-shadow:var(--shadow-lg); border:1px solid var(--border-light); }
+    .field-hint { font-size:11px; color:var(--text-tertiary); margin-top:4px; }
+
+    input:hover, select:hover, textarea:hover { border-color:var(--border-light); }
+    .step-header .step-num { transition:box-shadow 0.25s, transform 0.25s; }
+    .step-group.open .step-num { box-shadow:0 0 0 4px var(--accent-bg); transform:scale(1.05); }
+
+    .empty-icon-wrap { transition:transform 0.3s; }
+    .empty-state:hover .empty-icon-wrap { transform:scale(1.08); }
+
+    @media (max-width:768px) {
+      .hero { padding:28px 20px; }
+      .hero h1 { font-size:24px; }
+      .card-header { padding:14px 16px; }
+      .card-body { padding:14px 16px; }
+      .form-row { flex-direction:column; gap:0; }
+      .form-group { min-width:100%; }
+      .step-nav { flex-direction:column; }
+      .step-nav .btn { width:100%; }
+      .btn-hero { display:block; width:100%; margin:6px 0 0 0 !important; }
+      .hero-right { display:flex; flex-direction:column; width:100%; }
+    }
+
+    body::before {
+      content:''; position:fixed; inset:-20%; z-index:-2; pointer-events:none;
+      background:
+        radial-gradient(40% 40% at 18% 22%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 70%),
+        radial-gradient(38% 38% at 82% 18%, color-mix(in srgb, var(--purple) 18%, transparent), transparent 70%),
+        radial-gradient(45% 45% at 70% 85%, color-mix(in srgb, var(--teal) 16%, transparent), transparent 72%),
+        radial-gradient(40% 40% at 25% 80%, color-mix(in srgb, var(--accent-light) 14%, transparent), transparent 72%);
+      background-repeat:no-repeat;
+      opacity:.55; filter:saturate(1.1);
+    }
+    [data-theme="light"] body::before { opacity:.35; }
+    body::after {
+      content:''; position:fixed; inset:0; z-index:-1; pointer-events:none;
+      background-image:
+        linear-gradient(color-mix(in srgb, var(--border) 40%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--border) 40%, transparent) 1px, transparent 1px);
+      background-size:46px 46px;
+      -webkit-mask-image:radial-gradient(circle at 50% 30%, #000 0%, transparent 78%);
+      mask-image:radial-gradient(circle at 50% 30%, #000 0%, transparent 78%);
+      opacity:.25;
+    }
+
+    @keyframes auroraDrift {
+      0%   { transform:translate3d(0,0,0) scale(1); }
+      33%  { transform:translate3d(2%,-2%,0) scale(1.06); }
+      66%  { transform:translate3d(-2%,1.5%,0) scale(.97); }
+      100% { transform:translate3d(0,0,0) scale(1); }
+    }
+    @keyframes floatUp {
+      from { opacity:0; transform:translateY(18px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .card, .modal {
+      background:color-mix(in srgb, var(--card) 78%, transparent);
+      backdrop-filter:blur(16px) saturate(1.2);
+      -webkit-backdrop-filter:blur(16px) saturate(1.2);
+      border:1px solid color-mix(in srgb, var(--border-light) 70%, transparent);
+      box-shadow:var(--shadow), inset 0 1px 0 color-mix(in srgb, #fff 8%, transparent);
+    }
+    [data-theme="light"] .card, [data-theme="light"] .modal {
+      background:color-mix(in srgb, var(--card) 85%, transparent);
+      box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.6);
+    }
+
+    .hero { background:linear-gradient(135deg, color-mix(in srgb, var(--card) 92%, transparent), var(--bg-elevated) 55%, color-mix(in srgb, var(--accent) 8%, var(--bg))); }
+    .hero-badge { animation:floatUp .6s ease both, badgeBob 4s ease-in-out 1s infinite; }
+    @keyframes badgeBob { 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-3px);} }
+    .hero h1 { background:linear-gradient(120deg,var(--text-primary) 0%, var(--accent) 55%, var(--purple) 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+
+    .btn:active { transform:scale(.96); }
+    .btn-accent:hover { box-shadow:0 6px 20px color-mix(in srgb,var(--accent) 45%, transparent); }
+
+    @media (prefers-reduced-motion:no-preference) {
+      body::before { animation:auroraDrift 26s ease-in-out infinite; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      body::before, .hero-badge { animation:none !important; }
+      * { scroll-behavior:auto; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="spinnerOverlay" class="spinner-overlay">
+  <div class="spinner"></div>
+  <div class="spinner-text" id="spinnerText">Loading...</div>
+</div>
+<div id="toastContainer" class="toast-container"></div>
+
+<div id="publicView" style="display:none;">
+  <div class="container" style="max-width: 800px;">
+    <div class="hero">
+      <div class="hero-content">
+        <div class="hero-left">
+          <img src="logo.webp" alt="UptoSkills" style="height:44px;width:auto;margin-bottom:16px;filter:drop-shadow(0 2px 8px rgba(29,201,234,0.3));">
+          <div class="hero-badge">Welcome Onboard!</div>
+          <h1>Intern Onboarding Portal</h1>
+          <p>Complete your registration to join the program. Fill in all required fields and upload your offer letter for verification.</p>
+        </div>
+        <div class="hero-right">
+          <button class="btn-hero" onclick="toggleTheme()" id="themeBtn" title="Toggle light / dark mode">
+            <svg id="themeIcon" viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"></svg>
+            <span id="themeLabel">Light</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="regFormCard">
+      <div class="card-header">
+        <div class="card-title">Intern Registration <span class="badge badge-accent" style="background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent);">Online Form</span></div>
+        <span style="font-size:12px;color:var(--text-secondary)"><span style="color:var(--red)">*</span> Required</span>
+      </div>
+
+      <div class="form-progress">
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+
+      <div class="step-group open">
+        <div class="step-header" onclick="toggleStep(this)">
+          <span class="step-num">1</span>
+          <span class="step-label">Personal &amp; Contact Information</span>
+          <span class="step-arrow open"></span>
+        </div>
+        <div class="step-body open">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name <span class="req">*</span></label>
+              <input type="text" id="regName" placeholder="John Doe">
+              <div class="field-error" id="errName">Please enter your full name</div>
+            </div>
+            <div class="form-group">
+              <label>Email ID <span class="req">*</span></label>
+              <input type="email" id="regEmail" placeholder="you@college.edu.in">
+              <div class="field-error" id="errEmail">Please enter a valid email</div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Mobile No <span class="req">*</span></label>
+              <input type="tel" id="regMobile" placeholder="+91 9876543210">
+              <div class="field-error" id="errMobile">Please enter mobile number</div>
+            </div>
+            <div class="form-group">
+              <label>WhatsApp No <span class="req">*</span></label>
+              <input type="tel" id="regWhatsapp" placeholder="+91 9876543210">
+              <label class="same-check" id="sameMobileWrap" for="sameMobile" style="margin-top:6px">
+                <input type="checkbox" id="sameMobile" onchange="toggleSameMobile()">
+                <span class="box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span>Same as Mobile Number</span>
+              </label>
+              <div class="field-error" id="errWhatsapp">Please enter WhatsApp number</div>
+            </div>
+          </div>
+          <div style="margin-bottom:12px;padding:10px 14px;background:var(--accent-bg);border:1px solid var(--accent);border-radius:var(--radius-sm);font-size:13px;font-weight:600;color:var(--accent)">Current Address</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Address Line 1 <span class="req">*</span></label>
+              <input type="text" id="currAddr1" placeholder="House/Flat No, Street">
+              <div class="field-error" id="errCurrAddr1">Please enter current address</div>
+            </div>
+            <div class="form-group">
+              <label>Address Line 2</label>
+              <input type="text" id="currAddr2" placeholder="Area, Locality (optional)">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Post Office <span class="req">*</span></label>
+              <input type="text" id="currPo" placeholder="Post Office">
+              <div class="field-error" id="errCurrPo">Required</div>
+            </div>
+            <div class="form-group">
+              <label>District <span class="req">*</span></label>
+              <input type="text" id="currDistrict" placeholder="District">
+              <div class="field-error" id="errCurrDistrict">Required</div>
+            </div>
+            <div class="form-group">
+              <div class="form-group">
+               <label>Country <span class="req">*</span></label>
+               <select id="currCountry"><option value="">-- Select Country --</option></select>
+               <div class="field-error" id="errCurrCountry">Required</div>
+             </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>State <span class="req">*</span></label>
+              <div id="currStateContainer">
+                <input type="text" id="currState" placeholder="State / Province / Region">
+              </div>
+              <div class="field-error" id="errCurrState">Required</div>
+            </div>
+            <div class="form-group">
+              <label>PIN Code <span class="req">*</span></label>
+              <input type="text" id="currPin" placeholder="6-digit PIN">
+              <div class="field-error" id="errCurrPin">Required</div>
+            </div>
+          </div>
+
+          <div style="margin-top:16px;margin-bottom:12px;padding:10px 14px;background:var(--purple-bg);border:1px solid var(--purple);border-radius:var(--radius-sm);font-size:13px;font-weight:600;color:var(--purple)">Permanent Address</div>
+          <label class="same-check" id="sameAddressWrap" for="sameAddress" style="margin-bottom:12px">
+            <input type="checkbox" id="sameAddress" onchange="toggleSameAddress()">
+            <span class="box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span>Same as Current Address</span>
+          </label>
+          <div id="permAddrFields">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Address Line 1 <span class="req">*</span></label>
+                <input type="text" id="permAddr1" placeholder="House/Flat No, Street">
+                <div class="field-error" id="errPermAddr1">Please enter permanent address</div>
+              </div>
+              <div class="form-group">
+                <label>Address Line 2</label>
+                <input type="text" id="permAddr2" placeholder="Area, Locality (optional)">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Post Office <span class="req">*</span></label>
+                <input type="text" id="permPo" placeholder="Post Office">
+                <div class="field-error" id="errPermPo">Required</div>
+              </div>
+              <div class="form-group">
+                <label>District <span class="req">*</span></label>
+                <input type="text" id="permDistrict" placeholder="District">
+                <div class="field-error" id="errPermDistrict">Required</div>
+              </div>
+              <div class="form-group">
+                <label>Country <span class="req">*</span></label>
+                <select id="permCountry"><option value="">-- Select Country --</option></select>
+                <div class="field-error" id="errPermCountry">Required</div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>State <span class="req">*</span></label>
+              <div id="permStateContainer">
+                <input type="text" id="permState" placeholder="State / Province / Region">
+              </div>
+                <div class="field-error" id="errPermState">Required</div>
+              </div>              
+              <div class="form-group">
+                <label>PIN Code <span class="req">*</span></label>
+                <input type="text" id="permPin" placeholder="6-digit PIN">
+                <div class="field-error" id="errPermPin">Required</div>
+              </div>
+            </div>
+          </div>
+          <div class="step-nav"><button type="button" class="btn btn-ghost" onclick="nextStep(0)">Next: Academic Details →</button></div>
+        </div>
+      </div>
+
+      <div class="step-group">
+        <div class="step-header" onclick="toggleStep(this)">
+          <span class="step-num">2</span>
+          <span class="step-label">Academic Details</span>
+          <span class="step-arrow"></span>
+        </div>
+        <div class="step-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>College Name <span class="req">*</span></label>
+              <input type="text" id="regCollege" placeholder="University / College Name">
+              <div class="field-error" id="errCollege">Required</div>
+            </div>
+            <div class="form-group">
+              <label>Degree Name <span class="req">*</span></label>
+              <input type="text" id="regDegree" placeholder="B.Tech, B.Sc, etc.">
+              <div class="field-error" id="errDegree">Required</div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Branch / Major <span class="req">*</span></label>
+              <input type="text" id="regBranch" placeholder="Computer Science, etc.">
+              <div class="field-error" id="errBranch">Required</div>
+            </div>
+            <div class="form-group">
+              <label>Enrollment No <span class="req">*</span></label>
+              <input type="text" id="regEnroll" placeholder="University Enrollment No">
+              <div class="field-error" id="errEnroll">Required</div>
+            </div>
+          </div>
+          <div class="step-nav"><button type="button" class="btn btn-ghost" onclick="prevStep(1)">← Back</button><button type="button" class="btn btn-accent" onclick="nextStep(1)">Next: Document Upload →</button></div>
+        </div>
+      </div>
+
+      <div class="step-group">
+        <div class="step-header" onclick="toggleStep(this)">
+          <span class="step-num">3</span>
+          <span class="step-label">Domain &amp; Document Upload (As per Offer Letter only)</span>
+          <span class="step-arrow"></span>
+        </div>
+        <div class="step-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Domain / Track <span class="req">*</span></label>
+              <select id="regDomain"><option value="">-- Select Domain --</option></select>
+              <div class="field-error" id="errDomain">Please select a domain</div>
+            </div>
+            <div class="form-group">
+              <label>Onboarding Date</label>
+              <input type="date" id="regDate" readonly>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Internship Start Date <span class="req">*</span></label>
+              <input type="date" id="regStartDate">
+              <div class="field-error" id="errStartDate">Please select a start date</div>
+            </div>
+            <div class="form-group">
+              <label>Internship End Date <span class="req">*</span></label>
+              <input type="date" id="regEndDate">
+              <div class="field-error" id="errEndDate">Please select an end date</div>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:8px">
+            <label>Offer Letter (PDF) <span class="req">*</span></label>
+            <div class="upload-zone" id="uploadZone">
+              <div class="upload-icon-wrap"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
+              <div class="upload-label">Drop PDF here or click to browse</div>
+              <div class="upload-sub">Maximum 5 MB</div>
+              <div class="file-name" id="fileName"></div>
+            </div>
+            <input type="file" id="pdfInput" accept="application/pdf" style="display:none">
+            <div class="field-error" id="errFile">Please upload your offer letter PDF</div>
+          </div>
+          <div class="step-nav"><button type="button" class="btn btn-ghost" onclick="prevStep(2)">← Back</button></div>
+        </div>
+      </div>
+
+      <div style="padding:20px 24px;border-top:1px solid var(--border-light)">
+        <button id="regSubmitBtn" class="btn btn-accent" onclick="submitRegistration()" style="width:100%;justify-content:center;padding:12px">Submit Registration</button>
+      </div>
+    </div>
+
+    <div class="card result-section" id="resultScreen">
+      <div class="card-body">
+        <div class="result-hero" id="resultHero">
+          <div class="result-icon-wrap" id="resultIconWrap">
+            <svg viewBox="0 0 120 120" id="resultIconSvg">
+              <circle class="check-circle" cx="60" cy="60" r="54"/>
+              <polyline class="check-path" points="38,60 54,76 82,44"/>
+              <circle class="x-circle" cx="60" cy="60" r="54" display="none"/>
+              <line class="x-path" x1="40" y1="40" x2="80" y2="80" display="none"/>
+              <line class="x-path-2" x1="80" y1="40" x2="40" y2="80" display="none"/>
+            </svg>
+          </div>
+          <div class="result-title" id="resultTitle">Registration Successful</div>
+          <div class="result-subtitle" id="resultSubtitle">Your application has been processed.</div>
+          <div class="result-code" id="displayCode" style="display:none">USINT2025071212345</div>
+          <div class="result-fail-reason" id="resultFailReason" style="display:none">
+            <div class="fail-label">Validation Notice</div>
+            <div class="fail-text" id="resultFailText">-</div>
+          </div>
+        </div>
+        <div class="result-detail-grid">
+          <div class="result-detail-item"><div class="result-detail-label">Name</div><div class="result-detail-value" id="dName">-</div></div>
+          <div class="result-detail-item"><div class="result-detail-label">Email</div><div class="result-detail-value" id="dEmail">-</div></div>
+          <div class="result-detail-item"><div class="result-detail-label">Mobile</div><div class="result-detail-value" id="dMobile">-</div></div>
+          <div class="result-detail-item"><div class="result-detail-label">Domain</div><div class="result-detail-value" id="dDomain">-</div></div>
+          <div class="result-detail-item"><div class="result-detail-label">College</div><div class="result-detail-value" id="dCollege">-</div></div>
+          <div class="result-detail-item"><div class="result-detail-label">Degree</div><div class="result-detail-value" id="dBranch">-</div></div>
+          <div class="result-detail-item"><div class="result-detail-label">Date</div><div class="result-detail-value" id="dDate">-</div></div>
+          <div class="result-detail-item"><div class="result-detail-label">Status</div><div class="result-detail-value" id="dStatus">-</div></div>
+        </div>
+        <div class="result-actions" id="resultActions">
+          <button class="btn btn-ghost" id="resultAnotherBtn" onclick="resetAll()" style="display:none">Register Another</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="registrationClosedView" style="display:none; text-align: center; padding: 100px 20px; animation: floatUp .6s ease both;">
+  <img src="logo.webp" alt="UptoSkills" style="height:44px;width:auto;margin-bottom:16px;filter:drop-shadow(0 2px 8px rgba(29,201,234,0.3));">
+  <h1 style="font-size: 24px; color: var(--text-primary); margin-bottom: 8px;">
+    Registrations Are Currently Closed
+  </h1>
+  <p style="font-size: 15px; color: var(--text-secondary); line-height: 1.6;">
+    We are not accepting new intern applications at this time.
+    <br>
+    Please check back later or contact the HR department for more information.
+  </p>
+</div>
+
+<script>
+  /* ============================================================
+     NETLIFY / EXTERNAL HOSTING BACKEND CONFIG
+     Set BACKEND_URL to your deployed Google Apps Script web app
+     exec URL for the INTERNREG.GS script.
+     ============================================================ */
+  var BACKEND_URL = 'https://script.google.com/macros/s/AKfycbzyKxJ5JeCbVJIaQojG1bDw7pRBkGvBTqUBuBCZ4n5VyG3E-6sSOelF-eSQ4HlPQl2KZg/exec'; // <-- IMPORTANT: SET YOUR WEB APP URL
+  var API_TOKEN = null;
+
+  var API_MAP = {
+    getFrontendConfig: function() { return { action: 'getFrontendConfig' }; },
+    handleInternRegistration: function(a){ return { action: 'handleInternRegistration', formData: a[0], pdfFileData: a[1], pdfFileId: a[2] }; },
+    getActiveDomains: function() { return { action: 'getActiveDomains' }; },
+    getPdfUploadUrl: function(a){ return { action: 'getPdfUploadUrl', fileName: a[0], mimeType: a[1], origin: a[2] }; },
+  };
+
+  function _gsExecute(fnName, args, successCb, failureCb) {
+    var spec = API_MAP[fnName];
+    if (!spec) {
+      console.error('Unknown backend function: ' + fnName);
+      if (failureCb) failureCb('Unknown backend function: ' + fnName);
+      return;
+    }
+    var mapped = spec(args || []);
+    mapped.__token = API_TOKEN;
+
+    if (!BACKEND_URL || BACKEND_URL === 'YOUR_INTERNREG_GS_WEB_APP_URL_HERE') {
+        var msg = 'The backend URL is not configured in internreg.html. Please set the BACKEND_URL variable.';
+        console.error(msg);
+        toast(msg, 'red');
+        if (failureCb) failureCb(msg);
+        return;
+    }
+
+    fetch(BACKEND_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(mapped),
+      mode: 'cors'
+    })
+    .then(function(response) {
+      if (!response.ok) throw new Error('Network response was not ok: ' + response.statusText);
+      return response.json();
+    })
+    .then(function(data) {
+      if (data && data.success === false && data.error) {
+        if (failureCb) failureCb(data.error);
+        else if (successCb) successCb(data);
+      } else if (successCb) {
+        successCb(data);
+      }
+    })
+    .catch(function(error) {
+      console.error('Fetch Error for ' + fnName + ':', error);
+      if (failureCb) failureCb(error.message || String(error));
+    });
+  }
+
+  function makeGsRunProxy() {
+    var state = { success: null, failure: null };
+    var handler = {
+      get: function(t, prop) {
+        if (prop === 'withSuccessHandler') return function(fn){ state.success = fn; return proxy; };
+        if (prop === 'withFailureHandler') return function(fn){ state.failure = fn; return proxy; };
+        return function(){
+          _gsExecute(prop, Array.prototype.slice.call(arguments), state.success, state.failure);
+          return proxy;
+        };
+      }
+    };
+    var proxy = new Proxy({}, handler);
+    return proxy;
+  }
+  var google = { script: { get run() { return makeGsRunProxy(); } } };
+
+  var selectedFile = null;
+  var lastFormData = null, lastResultData = null, editingRowNum = null;
+
+  var INDIAN_STATES = [
+    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal",
+    "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry",
+    "Others"
+  ];
+
+  var COUNTRIES = [
+    "Afghanistan","Albania","Algeria","Andorra","Angola","Argentina","Armenia","Australia","Austria","Azerbaijan",
+    "Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia",
+    "Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi",
+    "Cambodia","Cameroon","Canada","Cape Verde","Central African Republic","Chad","Chile","China","Colombia",
+    "Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic",
+    "Denmark","Djibouti","Dominica","Dominican Republic",
+    "Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia",
+    "Fiji","Finland","France",
+    "Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana",
+    "Haiti","Honduras","Hungary",
+    "Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy",
+    "Jamaica","Japan","Jordan",
+    "Kazakhstan","Kenya","Kiribati","Kuwait","Kyrgyzstan",
+    "Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg",
+    "Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico",
+    "Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar",
+    "Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway",
+    "Oman",
+    "Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal",
+    "Qatar",
+    "Romania","Russia","Rwanda",
+    "Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino",
+    "Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore",
+    "Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain",
+    "Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria",
+    "Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu",
+    "Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan",
+    "Vanuatu","Vatican City","Venezuela","Vietnam",
+    "Yemen",
+    "Zambia","Zimbabwe"
+  ];
+
+  document.addEventListener('DOMContentLoaded', function() {
+    showSpinner('Initializing...');
+    getApiToken();
+    initTheme();
+    setDate();
+    initUpload();
+    populateCountries();
+    var progEls = document.querySelectorAll('#regFormCard input, #regFormCard select');
+    // Add event listeners for country dropdowns
+    document.getElementById('currCountry').addEventListener('change', function() { updateStateUI('curr'); });
+    document.getElementById('permCountry').addEventListener('change', function() { updateStateUI('perm'); });
+    updateStateUI('curr'); updateStateUI('perm'); // Initial check
+    for (var pe = 0; pe < progEls.length; pe++) {
+      progEls[pe].addEventListener('input', updateProgress);
+      progEls[pe].addEventListener('change', updateProgress);
+    }
+    updateProgress();
+    var rc = document.getElementById('regFormCard');
+    if (rc) rc.classList.add('card-enter');
+  });
+
+  function getApiToken() {
+    google.script.run
+      .withSuccessHandler(function(config) {
+        if (config && config.token) {
+          API_TOKEN = config.token;
+          // Now that we have the token, we can load the domains.
+          loadDomains();
+          console.log("API Token received and set.");
+        } else {
+          console.error("Failed to retrieve API token from backend.");
+           hideSpinner();
+        }
+      }).getFrontendConfig();
+  }
+
+  function populateCountries() {
+    var ids = ['currCountry','permCountry'];
+    for (var c = 0; c < ids.length; c++) {
+      var sel = document.getElementById(ids[c]);
+      if (!sel) continue;
+      for (var i = 0; i < COUNTRIES.length; i++) {
+        var o = document.createElement('option');
+        o.value = COUNTRIES[i];
+        o.textContent = COUNTRIES[i];
+        if (COUNTRIES[i] === 'India') o.selected = true;
+        sel.appendChild(o);
+      }
+    }
+  }
+
+  function updateStateUI(prefix) {
+    var countryEl = document.getElementById(prefix + 'Country');
+    var stateContainer = document.getElementById(prefix + 'StateContainer');
+    if (!countryEl || !stateContainer) return;
+
+    var isIndia = countryEl.value === 'India';
+    var h = '';
+
+    if (isIndia) {
+      h = '<select id="' + prefix + 'State" onchange="handleStateOther(\''+prefix+'\')">';
+      h += '<option value="">-- Select State --</option>';
+      INDIAN_STATES.forEach(function(state) {
+        h += '<option value="' + state + '">' + state + '</option>';
+      });
+      h += '</select>';
+      h += '<input type="text" id="' + prefix + 'StateOther" placeholder="Please specify state" style="display:none; margin-top:8px;">';
+    } else {
+      h = '<input type="text" id="' + prefix + 'State" placeholder="State / Province / Region">';
+    }
+    stateContainer.innerHTML = h;
+  }
+
+  function handleStateOther(prefix) {
+    var stateSelect = document.getElementById(prefix + 'State');
+    var otherInput = document.getElementById(prefix + 'StateOther');
+    if (!stateSelect || !otherInput) return;
+
+    if (stateSelect.value === 'Others') {
+      otherInput.style.display = 'block';
+      otherInput.focus();
+    } else {
+      otherInput.style.display = 'none';
+      otherInput.value = '';
+    }
+  }
+
+  function setDate() {
+    var el = document.getElementById('regDate');
+    if (!el) return;
+    var d = new Date(), y = d.getFullYear(), m = ('0'+(d.getMonth()+1)).slice(-2), day = ('0'+d.getDate()).slice(-2);
+    el.value = y + '-' + m + '-' + day;
+  }
+
+  var SUN_SVG = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="4.22" x2="19.78" y2="5.64"/>';
+  var MOON_SVG = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+
+  function initTheme() {
+    var stored = 'dark';
+    try { stored = localStorage.getItem('hr_portal_theme') || 'dark'; } catch (e) {}
+    applyTheme(stored);
+  }
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    var iconHtml = theme === 'dark' ? SUN_SVG : MOON_SVG;
+    var label = theme === 'dark' ? 'Light' : 'Dark';
+    var i1 = document.getElementById('themeIcon'); if (i1) i1.innerHTML = iconHtml;
+    var l1 = document.getElementById('themeLabel'); if (l1) l1.textContent = label;
+  }
+  function toggleTheme() {
+    var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+    var next = cur === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try { localStorage.setItem('hr_portal_theme', next); } catch (e) {}
+  }
+
+  function showSpinner(t) { document.getElementById('spinnerText').textContent = t || 'Loading...'; document.getElementById('spinnerOverlay').classList.add('active'); }
+  function hideSpinner() { document.getElementById('spinnerOverlay').classList.remove('active'); }
+
+  function toast(msg, type) {
+    type = type || 'accent';
+    var c = document.getElementById('toastContainer');
+    var t = document.createElement('div');
+    t.className = 'toast toast-' + type;
+    var iconSvg = '';
+    if (type === 'green') iconSvg = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+    else if (type === 'red') iconSvg = '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    else if (type === 'orange') iconSvg = '<svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+    else iconSvg = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+    t.innerHTML = '<span class="toast-icon">'+iconSvg+'</span> ' + msg;
+    c.appendChild(t);
+    setTimeout(function() {
+      t.style.opacity = '0'; t.style.transform = 'translateX(40px)'; t.style.transition = 'all 0.3s';
+      setTimeout(function() { if (t.parentNode) t.remove(); }, 300);
+    }, 3500);
+  }
+
+  function toggleStep(header) {
+    var body = header.nextElementSibling;
+    var arrow = header.querySelector('.step-arrow');
+    if (!body) return;
+    body.classList.toggle('open');
+    if (arrow) arrow.classList.toggle('open');
+  }
+
+  function updateProgress() {
+    var ids = ['regName','regEmail','regMobile','regWhatsapp','currAddr1','currPo','currDistrict','currState','currCountry','currPin','regCollege','regDegree','regBranch','regEnroll','regDomain'];
+    var filled = 0, total = ids.length;
+    for (var i = 0; i < ids.length; i++) {
+      var el = document.getElementById(ids[i]);
+      if (el && el.value && el.value.trim()) filled++;
+    }
+    if (selectedFile) filled++;
+    total++;
+    var pct = Math.round((filled / total) * 100);
+    var fill = document.getElementById('progressFill');
+    if (fill) fill.style.width = pct + '%';
+  }
+
+  function clearErrors() {
+    var els = document.querySelectorAll('.field-error');
+    for (var i = 0; i < els.length; i++) els[i].classList.remove('show');
+    var errs = document.querySelectorAll('input.error, select.error');
+    for (var i = 0; i < errs.length; i++) errs[i].classList.remove('error');
+  }
+
+  function initUpload() {
+    var zone = document.getElementById('uploadZone');
+    var input = document.getElementById('pdfInput');
+    if (!zone || !input) return;
+    zone.onclick = function() { input.click(); };
+    input.onchange = function(e) { if (e.target.files[0]) processFile(e.target.files[0]); };
+    zone.addEventListener('dragover', function(e) { e.preventDefault(); this.classList.add('dragover'); });
+    zone.addEventListener('dragleave', function(e) { e.preventDefault(); this.classList.remove('dragover'); });
+    zone.addEventListener('drop', function(e) { e.preventDefault(); this.classList.remove('dragover'); if (e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]); });
+  }
+
+  function processFile(f) {
+    if (f.type !== 'application/pdf') { toast('Please select a PDF file', 'red'); return; }
+    if (f.size > 5*1024*1024) { toast('File too large. Max 5MB.', 'red'); return; }
+    selectedFile = f;
+    document.getElementById('fileName').textContent = f.name + ' (' + (f.size/1024).toFixed(1) + ' KB)';
+    document.getElementById('uploadZone').classList.add('has-file');
+    document.getElementById('errFile').classList.remove('show');
+    updateProgress();
+  }
+
+  function loadDomains() {
+    google.script.run
+      .withSuccessHandler(function(d) {
+        hideSpinner();
+        // First, check if registration is enabled.
+        if (d && d.registrationEnabled === false) {
+          document.getElementById('publicView').style.display = 'none';
+          document.getElementById('registrationClosedView').style.display = 'block';
+          return;
+        }
+
+        document.getElementById('publicView').style.display = 'block';
+        var sel = document.getElementById('regDomain');
+        if (!sel) return;
+        var cur = sel.value;
+        if (d && d.success === false && d.error) {
+          toast('Error: ' + d.error, 'red');
+          sel.innerHTML = '<option value="">Could not load domains</option>';
+          return;
+        }
+        var domains = d.domains || d; // Handle both new object and old array format
+        if (!domains || domains.length === 0) { sel.innerHTML = '<option value="">No domains available</option>'; return; }
+        sel.innerHTML = '<option value="">-- Select Domain --</option>';
+        for (var i = 0; i < domains.length; i++) {
+          var o1 = document.createElement('option'); o1.value = domains[i]; o1.textContent = domains[i]; sel.appendChild(o1);
+        }
+        if (cur) sel.value = cur;
+      })
+      .withFailureHandler(function(err) {
+        hideSpinner();
+        var sel = document.getElementById('regDomain');
+        if (sel) sel.innerHTML = '<option value="">Could not load domains</option>';
+        toast('Network Error: ' + err, 'red');
+      })
+      .getActiveDomains();
+  }
+
+  function toggleSameMobile() {
+    var chk = document.getElementById('sameMobile');
+    var wrap = document.getElementById('sameMobileWrap');
+    var wa = document.getElementById('regWhatsapp');
+    var mob = document.getElementById('regMobile');
+    if (chk.checked) {
+      wa.value = mob.value;
+      wa.readOnly = true;
+      document.getElementById('errWhatsapp').classList.remove('show');
+      wa.classList.remove('error');
+      if (wrap) wrap.classList.add('checked');
+    } else {
+      wa.readOnly = false;
+      if (wrap) wrap.classList.remove('checked');
+    }
+  }
+
+  function toggleSameAddress() {
+    var chk = document.getElementById('sameAddress');
+    var wrap = document.getElementById('sameAddressWrap');
+    var fields = document.getElementById('permAddrFields');
+    if (chk.checked) {
+      fields.style.display = 'none';
+      if (wrap) wrap.classList.add('checked');
+    } else {
+      fields.style.display = 'block';
+      if (wrap) wrap.classList.remove('checked');
+    }
+  }
+
+  function checkEmail() {
+    var email = document.getElementById('regEmail');
+    if (!email || !email.value.trim()) { toast('Please enter your email', 'red'); if (email) email.classList.add('error'); return false; }
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.value.trim())) { toast('Please enter a valid email address', 'red'); if (email) email.classList.add('error'); return false; }
+    return true;
+  }
+  function checkMobile() {
+    var mobile = document.getElementById('regMobile');
+    if (!mobile || !mobile.value.trim()) { toast('Please enter mobile number', 'red'); if (mobile) mobile.classList.add('error'); return false; }
+    var mobileClean = mobile.value.trim().replace(/[\s\-\(\)]/g, '');
+    if (!/^(\+?\d{1,3})?\d{10}$/.test(mobileClean)) { toast('Enter a valid 10-digit mobile number', 'red'); if (mobile) mobile.classList.add('error'); return false; }
+    return true;
+  }
+  function checkWhatsapp() {
+    var whatsapp = document.getElementById('regWhatsapp');
+    var sameMobileChk = document.getElementById('sameMobile');
+    if (whatsapp && whatsapp.value.trim()) {
+      var waClean = whatsapp.value.trim().replace(/[\s\-\(\)]/g, '');
+      if (!/^(\+?\d{1,3})?\d{10}$/.test(waClean) && (!sameMobileChk || !sameMobileChk.checked)) {
+        toast('Enter a valid WhatsApp number', 'red'); if (whatsapp) whatsapp.classList.add('error');
+        return false;
+      }
+      return true;
+    }
+    if (!sameMobileChk || !sameMobileChk.checked) {
+      toast('Please enter WhatsApp number or check same as mobile', 'red'); if (whatsapp) whatsapp.classList.add('error');
+      return false;
+    }
+    return true;
+  }
+  function checkRequired(ids) {
+    var ok = true;
+    for (var i = 0; i < ids.length; i++) {
+      var el = document.getElementById(ids[i].id);
+      if (!el || !el.value.trim()) { toast('Please fill out ' + el.previousElementSibling.textContent.replace('*','').trim(), 'red'); if (el) el.classList.add('error'); ok = false; }
+    }
+    return ok;
+  }
+  function scrollToFirstError() {
+    var firstErr = document.querySelector('#regFormCard .error');
+    if (firstErr) {
+      firstErr.scrollIntoView({ behavior:'smooth', block:'center' });
+      firstErr.classList.remove('field-shake');
+      void firstErr.offsetWidth;
+      firstErr.classList.add('field-shake');
+    }
+  }
+  var CURR_REQUIRED = [
+    {id:'regName',err:'errName'},{id:'currAddr1',err:'errCurrAddr1'},{id:'currPo',err:'errCurrPo'},
+    {id:'currDistrict',err:'errCurrDistrict'},{id:'currState',err:'errCurrState'},
+    {id:'currCountry',err:'errCurrCountry'},{id:'currPin',err:'errCurrPin'}
+  ];
+  var PERM_REQUIRED = [
+    {id:'permAddr1',err:'errPermAddr1'},{id:'permPo',err:'errPermPo'},
+    {id:'permDistrict',err:'errPermDistrict'},{id:'permState',err:'errPermState'},
+    {id:'permCountry',err:'errPermCountry'},{id:'permPin',err:'errPermPin'}
+  ];
+  var ACADEMIC_REQUIRED = [
+    {id:'regCollege',err:'errCollege'},{id:'regDegree',err:'errDegree'},
+    {id:'regBranch',err:'errBranch'},{id:'regEnroll',err:'errEnroll'}
+  ];
+
+  function validate() {
+    clearErrors();
+    var ok = true;
+    if (!checkEmail()) ok = false;
+    if (!checkMobile()) ok = false;
+    if (!checkWhatsapp()) ok = false;
+    if (!checkRequired(CURR_REQUIRED)) ok = false;
+    var sameAddrChk = document.getElementById('sameAddress');
+    if (!sameAddrChk || !sameAddrChk.checked) { if (!checkRequired(PERM_REQUIRED)) ok = false; }
+    if (!checkRequired(ACADEMIC_REQUIRED)) ok = false;
+    var domain = document.getElementById('regDomain');
+    if (!domain || !domain.value) { toast('Please select a domain', 'red'); if (domain) domain.classList.add('error'); ok = false; }
+
+    var startDateEl = document.getElementById('regStartDate');
+    var endDateEl = document.getElementById('regEndDate');
+    if (!startDateEl.value) { toast('Please select a start date', 'red'); startDateEl.classList.add('error'); ok = false; }
+    if (!endDateEl.value) { toast('Please select an end date', 'red'); endDateEl.classList.add('error'); ok = false; }
+    if (startDateEl.value && endDateEl.value) {
+        var startDate = new Date(startDateEl.value);
+        var endDate = new Date(endDateEl.value);
+        var monthDiff = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth());
+        if (monthDiff < 3) {
+            toast('Internship duration must be at least 3 months', 'red'); endDateEl.classList.add('error'); ok = false;
+        }
+    }
+    if (!selectedFile) { showErr('errFile'); ok = false; }
+    if (!ok) { scrollToFirstError(); toast('Please fill all required fields', 'red'); }
+    return ok;
+  }
+
+  function validateStep(idx) {
+    var ok = true;
+    if (idx === 0) {
+      if (!checkEmail()) ok = false;
+      if (!checkMobile()) ok = false;
+      if (!checkWhatsapp()) ok = false;
+      if (!checkRequired(CURR_REQUIRED)) ok = false;
+      var sa = document.getElementById('sameAddress');
+      if (!sa || !sa.checked) { if (!checkRequired(PERM_REQUIRED)) ok = false; }
+    } else if (idx === 1) {
+      if (!checkRequired(ACADEMIC_REQUIRED)) ok = false;
+    } else if (idx === 2) {
+      var domain = document.getElementById('regDomain');
+      if (!domain || !domain.value) { showErr('errDomain'); if (domain) domain.classList.add('error'); ok = false; }
+      if (!selectedFile) { showErr('errFile'); ok = false; }
+    }
+    if (!ok) { scrollToFirstError(); toast('Please complete this step', 'red'); }
+    return ok;
+  }
+
+  function goToStep(idx) {
+    var groups = document.querySelectorAll('#regFormCard .step-group');
+    for (var i = 0; i < groups.length; i++) {
+      var body = groups[i].querySelector('.step-body');
+      var arrow = groups[i].querySelector('.step-arrow');
+      if (body && arrow) {
+        if (i === idx) { body.classList.add('open'); arrow.classList.add('open'); }
+        else { body.classList.remove('open'); arrow.classList.remove('open'); }
+      }
+    }
+    var card = document.getElementById('regFormCard');
+    window.scrollTo({ top: (card ? card.offsetTop - 80 : 0), behavior: 'smooth' });
+  }
+  function nextStep(cur) { if (validateStep(cur)) goToStep(cur + 1); }
+  function prevStep(cur) { goToStep(cur - 1); }
+
+  function submitRegistration() {
+    if (!validate()) return;
+    if (!selectedFile) { toast('Please attach the offer letter PDF', 'red'); return; }
+    var sb = document.getElementById('regSubmitBtn');
+    if (sb) sb.disabled = true;
+    showSpinner('Uploading your offer letter...');
+    var fd = getFormData();
+
+    var watchdog = setTimeout(function() {
+      hideSpinner(); if (sb) sb.disabled = false;
+      toast('This is taking longer than expected. Please check your internet and try again.', 'red');
+    }, 180000);
+
+    google.script.run
+      .withSuccessHandler(function(up) {
+        if (!up || !up.success || !up.uploadUri) {
+          uploadPdfAsBase64(fd, selectedFile, sb, watchdog);
+          return;
+        }
+        fetch(up.uploadUri, {
+          method: 'PUT',
+          headers: { 'Content-Type': selectedFile.type || 'application/pdf' },
+          body: selectedFile
+        }).then(function(resp) {
+          if (!resp.ok) throw new Error('Drive upload HTTP ' + resp.status);
+          return resp.json();
+        }).then(function(meta) {
+          var fid = (meta && (meta.id || (meta.file && meta.file.id))) || null;
+          if (!fid) throw new Error('Drive did not return a file id');
+          showSpinner('Submitting registration...');
+          google.script.run
+            .withSuccessHandler(function(result) {
+              clearTimeout(watchdog); hideSpinner(); if (sb) sb.disabled = false;
+              if (result && result.success) { showResult(result, fd); }
+              else { 
+                var errorMsg = result && result.error ? result.error : 'Registration failed';
+                toast(errorMsg, 'red');
+              }
+            })
+            .withFailureHandler(function(err) { clearTimeout(watchdog); hideSpinner(); if (sb) sb.disabled = false; toast('Error: ' + err, 'red'); })
+            .handleInternRegistration(fd, null, fid);
+        }).catch(function(err) {
+          clearTimeout(watchdog); hideSpinner(); if (sb) sb.disabled = false;
+          toast('PDF upload failed: ' + (err && err.message ? err.message : err), 'red');
+        });
+      })
+      .withFailureHandler(function(err) { clearTimeout(watchdog); hideSpinner(); if (sb) sb.disabled = false; toast('Error: ' + err, 'red'); })
+      .getPdfUploadUrl(selectedFile.name, selectedFile.type, window.location.origin); // Fallback to base64 upload
+  }
+
+  function uploadPdfAsBase64(fd, file, sb, watchdog) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var b64 = (e.target.result || '').split(',')[1] || '';
+      var payload = { name: file.name, type: file.type || 'application/pdf', base64: b64 };
+      showSpinner('Submitting registration...');
+      google.script.run
+        .withSuccessHandler(function(result) {
+          clearTimeout(watchdog); hideSpinner(); if (sb) sb.disabled = false;
+          if (result && result.success) { showResult(result, fd); }
+          else { 
+            var errorMsg = result && result.error ? result.error : 'Registration failed';
+            toast(errorMsg, 'red');
+          }
+        })
+        .withFailureHandler(function(err) { clearTimeout(watchdog); hideSpinner(); if (sb) sb.disabled = false; toast('Error: ' + err, 'red'); })
+        .handleInternRegistration(fd, payload, null);
+    };
+    reader.onerror = function() { clearTimeout(watchdog); hideSpinner(); if (sb) sb.disabled = false; toast('Could not read the PDF file', 'red'); };
+    reader.readAsDataURL(file);
+  }
+
+  function getFormData() {
+    function getStateValue(prefix) {
+      var stateEl = document.getElementById(prefix + 'State');
+      if (!stateEl) return '';
+      if (stateEl.tagName === 'SELECT' && stateEl.value === 'Others') {
+        return document.getElementById(prefix + 'StateOther').value.trim();
+      }
+      return stateEl.value.trim();
+    }
+
+    return {
+      name: document.getElementById('regName').value.trim(),
+      emailId: document.getElementById('regEmail').value.trim(),
+      mobileNo: document.getElementById('regMobile').value.trim(),
+      whatsappNo: document.getElementById('regWhatsapp').value.trim(),
+      currentAddr: [document.getElementById('currAddr1').value.trim(), document.getElementById('currAddr2').value.trim(), document.getElementById('currPo').value.trim(), document.getElementById('currDistrict').value.trim(), getStateValue('curr'), document.getElementById('currCountry').value, document.getElementById('currPin').value.trim()].filter(Boolean).join(', '),
+      permanentAddr: document.getElementById('sameAddress').checked ?
+        [document.getElementById('currAddr1').value.trim(), document.getElementById('currAddr2').value.trim(), document.getElementById('currPo').value.trim(), document.getElementById('currDistrict').value.trim(), getStateValue('curr'), document.getElementById('currCountry').value, document.getElementById('currPin').value.trim()].filter(Boolean).join(', ') :
+        [document.getElementById('permAddr1').value.trim(), document.getElementById('permAddr2').value.trim(), document.getElementById('permPo').value.trim(), document.getElementById('permDistrict').value.trim(), getStateValue('perm'), document.getElementById('permCountry').value, document.getElementById('permPin').value.trim()].filter(Boolean).join(', '),
+      collegeName: document.getElementById('regCollege').value.trim(),
+      degreeName: document.getElementById('regDegree').value.trim(),
+      branchName: document.getElementById('regBranch').value.trim(),
+      enrollmentNo: document.getElementById('regEnroll').value.trim(),
+      domainName: document.getElementById('regDomain').value,
+      onboardingDate: document.getElementById('regDate').value,
+      startDate: document.getElementById('regStartDate').value,
+      endDate: document.getElementById('regEndDate').value,
+    };
+  }
+
+  function showResult(result, d) {
+    document.getElementById('regFormCard').style.display = 'none';
+    document.getElementById('resultScreen').classList.add('show');
+    var isSuccess = result.status !== 'Failed';
+    var iconWrap = document.getElementById('resultIconWrap');
+    iconWrap.className = 'result-icon-wrap ' + (isSuccess ? 'success' : 'fail');
+    var svg = document.getElementById('resultIconSvg');
+    var circles = svg.querySelectorAll('.check-circle, .x-circle');
+    var paths = svg.querySelectorAll('.check-path, .x-path, .x-path-2');
+    for (var si = 0; si < circles.length; si++) circles[si].style.display = 'none';
+    for (var si = 0; si < paths.length; si++) paths[si].style.display = 'none';
+    if (isSuccess) {
+      svg.querySelector('.check-circle').style.display = '';
+      svg.querySelector('.check-path').style.display = '';
+    } else {
+      svg.querySelector('.x-circle').style.display = '';
+      svg.querySelector('.x-path').style.display = '';
+      svg.querySelector('.x-path-2').style.display = '';
+    }
+
+    void svg.offsetWidth;
+    var animEls = svg.querySelectorAll('.check-circle, .check-path, .x-circle, .x-path, .x-path-2');
+    for (var ai = 0; ai < animEls.length; ai++) {
+      animEls[ai].style.animation = 'none';
+      void animEls[ai].offsetHeight;
+      if (animEls[ai].style.display !== 'none') {
+        animEls[ai].style.animation = '';
+      }
+    }
+    document.getElementById('resultTitle').textContent = isSuccess ? 'Registration Submitted' : 'Registration Blocked';
+    document.getElementById('resultSubtitle').textContent = isSuccess ? 
+      'Your application has been saved and is pending manual verification. You will get an email from the UptoSkills HR team once your details are verified.' : 
+      'Your registration could not be processed due to the following reason.';
+    
+    document.getElementById('displayCode').style.display = 'none';
+
+    var failEl = document.getElementById('resultFailReason');
+    var failText = document.getElementById('resultFailText');
+    if (!isSuccess && result.reason) {
+      failEl.style.display = 'block';
+      failText.textContent = result.reason;
+    } else {
+      failEl.style.display = 'none';
+    }
+    var anotherBtn = document.getElementById('resultAnotherBtn');
+    anotherBtn.style.display = 'inline-flex';
+    
+    document.getElementById('dName').textContent = d.name || '-';
+    document.getElementById('dEmail').textContent = d.emailId || '-';
+    document.getElementById('dMobile').textContent = d.mobileNo || '-';
+    document.getElementById('dDomain').textContent = d.domainName || '-';
+    document.getElementById('dCollege').textContent = d.collegeName || '-';
+    document.getElementById('dBranch').textContent = d.branchName || '-';
+    document.getElementById('dDate').textContent = d.onboardingDate ? new Date(d.onboardingDate).toLocaleDateString() : '-';
+    var st = document.getElementById('dStatus');
+    st.textContent = result.status || (isSuccess ? 'Pending Verification' : 'Failed');
+    st.style.color = isSuccess ? 'var(--orange)' : 'var(--red)';
+    st.style.fontWeight = '600';
+    if (isSuccess) {
+      toast('Registration submitted for verification!', 'green');
+    } else {
+      toast(result.reason || 'Registration failed', 'red');
+    }
+  }
+  function resetAll() {
+    document.getElementById('resultScreen').classList.remove('show');
+    document.getElementById('regFormCard').style.display = 'block';
+    var inputs = document.querySelectorAll('#publicView input');
+    for (var i = 0; i < inputs.length; i++) { if (inputs[i].type !== 'date') inputs[i].value = ''; }
+    document.getElementById('regDomain').value = '';
+    document.getElementById('sameMobile').checked = false;
+    document.getElementById('regWhatsapp').readOnly = false;
+    document.getElementById('sameMobileWrap').classList.remove('checked');
+    document.getElementById('sameAddress').checked = false;
+    document.getElementById('permAddrFields').style.display = 'block';
+    document.getElementById('sameAddressWrap').classList.remove('checked');
+    selectedFile = null;
+    document.getElementById('fileName').textContent = '';
+    document.getElementById('uploadZone').classList.remove('has-file');
+    document.getElementById('pdfInput').value = '';
+    setDate();
+    clearErrors();
+    updateProgress();
+    goToStep(0);
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function esc(s) {
+    if (typeof s !== 'string') return s;
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+</script>
+
+<div style="text-align:center; padding: 16px 20px; color: var(--text-tertiary); font-size: 12px; border-top: 1px solid var(--border); margin-top: 20px;">
+  &copy; <span id="copyrightYear"></span> UptoSkills. All rights reserved.
+</div>
+
+<script>
+  var yearSpan = document.getElementById('copyrightYear');
+  if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

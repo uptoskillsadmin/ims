@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1dc9ea">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="UptoSkills Portal Hub">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="icon.webp">
+  <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlVwdG9Ta2lsbHMgUG9ydGFsIEh1YiIsCiAgInNob3J0X25hbWUiOiAiUG9ydGFsIEh1YiIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAic2NvcGUiOiAiLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzBmMTcyYSIsCiAgInRoZW1lX2NvbG9yIjogIiMxZGM5ZWEiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJpY29uLndlYnAiLAogICAgICAic2l6ZXMiOiAiMjQweDQ4MCIsCiAgICAgICJ0eXBlIjogImltYWdlL3dlYnAiLAogICAgICAicHVycG9zZSI6ICJhbnkgbWFza2FibGUiCiAgICB9LAogICAgewogICAgICAic3JjIjogImljb24ud2VicCIsCiAgICAgICJzaXplcyI6ICIyNDB4NDgwIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvd2VicCIsCiAgICAgICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSIKICAgIH0KICBdCn0K">
+  <title>UptoSkills Portal Hub</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root, [data-theme="dark"] {
+      --bg:#0f172a; --bg-elevated:#111927; --card:#1e293b; --border:#2d3a50; --border-light:#3a4a62; --text-primary:#f1f5f9; --text-secondary:#94a3b8; --accent:#1dc9ea; --purple:#c084fc; --teal:#14b8a6; --accent-light:#06b6d4; --radius:10px; --radius-xl:18px; --shadow:0 4px 12px rgba(0,0,0,0.4); --font:-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', 'Segoe UI', sans-serif; --transition:all 0.2s cubic-bezier(0.25,0.1,0.25,1);
+    }
+    [data-theme="light"] {
+      --bg:#f1f5f9; --bg-elevated:#ffffff; --card:#ffffff; --border:#e2e8f0; --border-light:#cbd5e1; --text-primary:#0f172a; --text-secondary:#475569; --accent:#0891b2; --purple:#9333ea; --teal:#0d9488; --accent-light:#06b6d4; --shadow:0 4px 14px rgba(15,23,42,0.10);
+    }
+    body { font-family:var(--font); background:var(--bg); color:var(--text-primary); -webkit-font-smoothing:antialiased; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
+    body::before {
+      content:''; position:fixed; inset:-20%; z-index:-2; pointer-events:none;
+      background:
+        radial-gradient(40% 40% at 18% 22%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 70%),
+        radial-gradient(38% 38% at 82% 18%, color-mix(in srgb, var(--purple) 18%, transparent), transparent 70%),
+        radial-gradient(45% 45% at 70% 85%, color-mix(in srgb, var(--teal) 16%, transparent), transparent 72%),
+        radial-gradient(40% 40% at 25% 80%, color-mix(in srgb, var(--accent-light) 14%, transparent), transparent 72%);
+      background-repeat:no-repeat; opacity:.55; filter:saturate(1.1); animation:auroraDrift 26s ease-in-out infinite;
+    }
+    [data-theme="light"] body::before { opacity:.35; }
+    @keyframes auroraDrift { 0%,100% { transform:translate3d(0,0,0) scale(1); } 33% { transform:translate3d(2%,-2%,0) scale(1.06); } 66% { transform:translate3d(-2%,1.5%,0) scale(.97); } }
+    .main-card {
+      width:100%; max-width:900px;
+      background:color-mix(in srgb, var(--card) 78%, transparent);
+      backdrop-filter:blur(16px) saturate(1.2); -webkit-backdrop-filter:blur(16px) saturate(1.2);
+      border:1px solid color-mix(in srgb, var(--border-light) 70%, transparent);
+      box-shadow:var(--shadow), inset 0 1px 0 color-mix(in srgb, #fff 8%, transparent);
+      border-radius:var(--radius-xl); padding:32px;
+      animation:floatUp .6s ease both;
+    }
+    @keyframes floatUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+    .header { text-align:center; margin-bottom:28px; }
+    .header img { height:40px; width:auto; filter:drop-shadow(0 2px 8px rgba(29,201,234,0.3)); margin-bottom:12px; }
+    .header h1 { font-size:24px; font-weight:700; color:var(--text-primary); margin-bottom:4px; }
+    .header p { font-size:15px; color:var(--text-secondary); }
+    .portal-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px; }
+    .portal-card {
+      background:color-mix(in srgb, var(--card) 85%, transparent);
+      border:1px solid var(--border); border-radius:var(--radius);
+      padding:24px; text-align:center;
+      transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+    .portal-card:hover {
+      transform:translateY(-4px);
+      border-color:var(--accent);
+      box-shadow:0 8px 24px rgba(0,0,0,0.2);
+    }
+    .portal-icon {
+      width:48px; height:48px; border-radius:12px; margin:0 auto 16px;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--accent); color:#0f172a;
+      box-shadow:0 4px 12px color-mix(in srgb, var(--accent) 35%, transparent);
+    }
+    .portal-icon svg { width:24px; height:24px; stroke-width:2; fill:none; stroke:currentColor; }
+    .portal-card h2 { font-size:16px; font-weight:600; color:var(--text-primary); margin-bottom:6px; }
+    .portal-card p { font-size:13px; color:var(--text-secondary); line-height:1.5; margin-bottom:20px; }
+    .btn {
+      display:inline-block; padding:10px 24px; border:none; border-radius:var(--radius);
+      font-size:13px; font-weight:600; cursor:pointer; text-decoration:none;
+      background:var(--bg-elevated); color:var(--text-primary); border:1px solid var(--border);
+      transition:var(--transition);
+    }
+    .btn:hover { background:var(--accent); color:#0f172a; border-color:var(--accent); }
+    .theme-toggle {
+      position:absolute; top:16px; right:16px;
+      width:40px; height:40px; border-radius:50%;
+      background:color-mix(in srgb, var(--card) 90%, transparent);
+      border:1px solid var(--border);
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; z-index:10;
+      box-shadow:0 2px 8px rgba(0,0,0,0.25);
+    }
+    .theme-toggle svg { width:20px; height:20px; stroke:var(--text-primary); }
+    @media (max-width: 600px) {
+      body { padding:12px; align-items:flex-start; }
+      .main-card { padding:24px; }
+      .portal-grid { grid-template-columns:1fr; }
+      .theme-toggle { top:12px; right:12px; width:44px; height:44px; }
+      .theme-toggle svg { width:22px; height:22px; }
+      .header img { height:32px; }
+      .header h1 { font-size:20px; }
+      .btn { width:100%; justify-content:center; }
+      .portal-icon { width:40px; height:40px; border-radius:10px; }
+      .portal-icon svg { width:20px; height:20px; }
+    }
+
+    #pwaInstallBtn {
+      display: none;
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 500;
+      background: var(--accent);
+      color: #0f172a;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: var(--transition);
+    }
+    #pwaInstallBtn:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    #pwaInstallBtn:active { transform: translateY(0); }
+
+    #pwaInstallModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      backdrop-filter: blur(4px);
+    }
+    #pwaInstallModal.open { display: flex; }
+    #pwaInstallModal .modal {
+      background: var(--card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+      animation: floatUp .3s ease both;
+    }
+    #pwaInstallModal .modal-icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      background: var(--accent-bg); color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px;
+    }
+    #pwaInstallModal .modal-icon svg { width: 28px; height: 28px; }
+    #pwaInstallModal h3 { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+    #pwaInstallModal p { font-size: 14px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5; }
+    #pwaInstallModal .modal-actions { display: flex; gap: 10px; justify-content: center; }
+    #pwaInstallModal .btn { padding: 10px 20px; border-radius: var(--radius); font-size: 13px; font-weight: 600; cursor: pointer; border: none; font-family: var(--font); transition: var(--transition); }
+    #pwaInstallModal .btn-primary { background: var(--accent); color: #0f172a; }
+    #pwaInstallModal .btn-primary:hover { background: var(--accent-light); }
+    #pwaInstallModal .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+    #pwaInstallModal .btn-ghost:hover { background: var(--bg-elevated); color: var(--text-primary); }
+  </style>
+</head>
+<body>
+
+  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+    <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+  </button>
+
+  <div class="main-card">
+    <div class="header">
+      <img src="logo.webp" alt="UptoSkills Logo">
+      <h1>UptoSkills Portal Hub</h1>
+      <p>Select your destination to get started.</p>
+    </div>
+
+    <div class="portal-grid">
+      <div class="portal-card" style="animation-delay: .1s;">
+        <div class="portal-icon" style="background:var(--accent)">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
+        </div>
+        <h2>Intern Registration</h2>
+        <p>New applicants can start their onboarding process here. Complete the form to join our program.</p>
+        <a href="internregistration.html" class="btn">Register Now</a>
+      </div>
+
+      <div class="portal-card" style="animation-delay: .2s;">
+        <div class="portal-icon" style="background:var(--purple)">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </div>
+        <h2>Intern Login</h2>
+        <p>Active interns can log in to view their details and submit change requests.</p>
+        <a href="intern.html" class="btn">Intern Portal</a>
+      </div>
+
+      <div class="portal-card" style="animation-delay: .3s;">
+        <div class="portal-icon" style="background:var(--teal)">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></path><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </div>
+        <h2>Sr. TL Login</h2>
+        <p>Sr. Team Leads can access their dashboard to manage assigned interns and approve requests.</p>
+        <a href="srteamlead.html" class="btn">Sr. TL Dashboard</a>
+      </div>
+
+      <div class="portal-card" style="animation-delay: .4s;">
+        <div class="portal-icon" style="background:var(--orange-light)">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+        <h2>HR Admin Login</h2>
+        <p>Administrative access for the Onboarding Team to manage all intern and program data.</p>
+        <a href="hradmin.html" onclick="this.href='hradmin.html?theme='+(document.documentElement.getAttribute('data-theme')||'dark')" class="btn">HR Dashboard</a>
+      </div>
+
+      <div class="portal-card" style="animation-delay: .5s;">
+        <div class="portal-icon" style="background:var(--blue-light)">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+        <h2>HR Onboarding Login</h2>
+        <p>Onboarding portal for new interns to complete their initial setup and documentation.</p>
+        <a href="hronboarding.html" class="btn">Onboarding Portal</a>
+      </div>
+
+      <div class="portal-card" style="animation-delay: .6s;">
+        <div class="portal-icon" style="background:var(--green)">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+        </div>
+        <h2>League Winner Claim Portal</h2>
+        <p>Claim your league winner rewards and recognition here.</p>
+        <a href="https://sites.google.com/view/usleaugewinner/home" target="_blank" class="btn">Claim Now</a>
+      </div>
+      <div style="text-align:center; padding: 16px 20px; color: var(--text-tertiary); font-size: 12px; border-top: 1px solid var(--border); margin-top: 20px;">
+        &copy; <span id="copyrightYear"></span> UptoSkills. All rights reserved.
+      </div>
+    </div>
+  </div>
+
+  <script>
+  var SUN_SVG = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="4.22" x2="19.78" y2="5.64"/>';
+  var MOON_SVG = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+
+  function initTheme() {
+    var stored = 'dark';
+    try { stored = localStorage.getItem('hr_portal_theme') || 'dark'; } catch (e) {}
+    applyTheme(stored);
+  }
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    var iconHtml = theme === 'dark' ? SUN_SVG : MOON_SVG;
+    var i1 = document.getElementById('themeIcon'); if (i1) i1.innerHTML = iconHtml;
+  }
+  function toggleTheme() {
+    var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+    var next = cur === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try { localStorage.setItem('hr_portal_theme', next); } catch (e) {}
+  }
+  document.addEventListener('DOMContentLoaded', initTheme);
+
+  var deferredPrompt = null;
+
+  function hidePWAButton() {
+    var btn = document.getElementById('pwaInstallBtn');
+    if (btn) btn.style.display = 'none';
+  }
+
+  function showPWAButton() {
+    var btn = document.getElementById('pwaInstallBtn');
+    if (btn) btn.style.display = 'inline-block';
+  }
+
+  function isMobileDevice() {
+    return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent) ||
+      (navigator.maxTouchPoints > 0 && window.innerWidth <= 768);
+  }
+
+  function setupPWA() {
+    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
+      hidePWAButton();
+      hidePWAInstallModal();
+      return;
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(function(reg) { console.log('PWA Service Worker registered:', reg); })
+        .catch(function(err) { console.log('Service Worker registration failed:', err); });
+    }
+
+    window.addEventListener('beforeinstallprompt', function(e) {
+      e.preventDefault();
+      deferredPrompt = e;
+      showPWAButton();
+      setTimeout(showPWAInstallModal, 1500);
+    });
+
+    window.addEventListener('appinstalled', function() {
+      deferredPrompt = null;
+      hidePWAButton();
+      hidePWAInstallModal();
+    });
+
+    if (isMobileDevice()) {
+      showPWAButton();
+      setTimeout(showPWAInstallModal, 2000);
+    }
+  }
+
+  function showPWAInstallModal() {
+    var modal = document.getElementById('pwaInstallModal');
+    if (modal && !modal.classList.contains('open')) {
+      modal.classList.add('open');
+    }
+  }
+
+  function hidePWAInstallModal() {
+    var modal = document.getElementById('pwaInstallModal');
+    if (modal) {
+      modal.classList.remove('open');
+    }
+  }
+
+  function installPWAFromModal() {
+    hidePWAInstallModal();
+    installPWA();
+  }
+
+  function installPWA() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function(choiceResult) {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('PWA installed');
+        }
+        deferredPrompt = null;
+        hidePWAButton();
+        hidePWAInstallModal();
+      });
+    } else {
+      hidePWAInstallModal();
+      alert('To install this app:\n\n1. Tap the browser menu (⋮)\n2. Select "Add to Home screen" or "Install app"');
+    }
+  }
+
+  setupPWA();
+</script>
+
+<button id="pwaInstallBtn" onclick="installPWA()" title="Install App">
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+    <polyline points="7 10 12 15 17 10"></polyline>
+    <line x1="12" y1="15" x2="12" y2="3"></line>
+  </svg>
+  Install App
+</button>
+
+<div id="pwaInstallModal">
+  <div class="modal">
+    <div class="modal-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+    </div>
+    <h3>Install UptoSkills App</h3>
+    <p>Install our app for a better experience with quick access and offline support.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="hidePWAInstallModal()">Maybe Later</button>
+      <button class="btn btn-primary" onclick="installPWAFromModal()">Install Now</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var yearSpan = document.getElementById('copyrightYear');
+  if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
